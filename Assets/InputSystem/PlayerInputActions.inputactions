@@ -1,0 +1,34 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "PlayerDefault",
+            "id": "4310151e-233d-4915-b9ca-fc4af6c1820b",
+            "actions": [
+                {
+                    "name": "LeftMvt",
+                    "type": "Button",
+                    "id": "d8ce4518-2ec2-4bda-9fe1-331b1d78a8f2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "088382ef-12fc-4a30-bdfc-0c49abfe8edb",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftMvt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
