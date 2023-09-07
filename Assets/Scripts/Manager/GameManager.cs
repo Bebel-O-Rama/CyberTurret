@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         currentNumberEnemyAlive -= 1;
         if (currentWaveEnemyLeft == 0)
         {
-            currentWaveNumber = +1;
+            currentWaveNumber += 1;
             PrepareNewWave(delayBetweenWave);
         }
     }

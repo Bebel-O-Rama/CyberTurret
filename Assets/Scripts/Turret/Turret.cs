@@ -77,7 +77,8 @@ public class Turret : MonoBehaviour
 
     private void ShootTarget()
     {
-        transform.LookAt(currentTarget.transform);
+        // transform.LookAt(currentTarget.transform);
+        transform.up = currentTarget.transform.position - turretPosition;
         // Shoot visual stuff
 
         currentTarget.GetComponent<Enemy>().OnHit();

@@ -17,8 +17,6 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         mat = GetComponent<SpriteRenderer>().material;
-        
-        // It would be nice to use the mat to show dmg (onHit, decrease the saturation or something like that)
         mat.color = data.baseColor;
         currentHP = data.baseHP;
         scrapValue = data.scrapValue;
@@ -26,7 +24,7 @@ public class Enemy : MonoBehaviour
         UpdateObjectivePosition();
 
         // We currently set the orientation only once, but we could play with that at some point...
-        transform.Rotate(Vector3.up * GetDegRotation());
+        transform.Rotate(Vector3.forward * GetDegRotation());
         
         isReady = true;
     }
@@ -47,7 +45,7 @@ public class Enemy : MonoBehaviour
     private float GetDegRotation()
     {
         var delta = UnityEngine.Vector3.Normalize(objectivePosition - transform.position);
-        return Mathf.Rad2Deg * Mathf.Atan2(delta.x, delta.z);
+        return -(Mathf.Rad2Deg * Mathf.Atan2(delta.x, delta.y));
     }
 
     private void UpdateObjectivePosition()
@@ -59,7 +57,7 @@ public class Enemy : MonoBehaviour
     {
         if (isReady)
         {
-            rb.velocity = transform.forward * baseSpeed;
+            rb.velocity = transform.up * baseSpeed;
         }
     }
 }
