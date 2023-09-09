@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int finalWaveNumber;
     [Min(0f)] [SerializeField] private float delayBetweenWave;
     [SerializeField] private int currentNumberEnemyAlive;
-    [SerializeField] private List<GameObject> currentEnemyAlive;
+    private List<GameObject> currentEnemyAlive = new();
     [SerializeField] private GameObject turretPF;
 
     // Player info
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
 
         InitialSetup();
     }
-
+    
     private void Start()
     {
         UpdateCurrentObjective();
