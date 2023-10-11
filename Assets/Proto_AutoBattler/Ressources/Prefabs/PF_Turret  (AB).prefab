@@ -93,10 +93,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6207505615964850698}
-  - component: {fileID: -4393782907212161128}
+  - component: {fileID: 2630987424270062756}
   - component: {fileID: 4841974153748517033}
   m_Layer: 9
-  m_Name: PF_Turret
+  m_Name: PF_Turret  (AB)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120,7 +120,7 @@ Transform:
   - {fileID: 8602504549725496017}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4393782907212161128
+--- !u!114 &2630987424270062756
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1950043259971951890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62c4c14aad782d14da4f58dd0f0cb18d, type: 3}
+  m_Script: {fileID: 11500000, guid: 62042800751184742ba0647ba33d24f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   output: {fileID: 2910750706350675756}

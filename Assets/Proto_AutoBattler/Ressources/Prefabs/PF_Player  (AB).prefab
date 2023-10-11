@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1091528553623049838}
-  - component: {fileID: 4353783926897525324}
+  - component: {fileID: 5715890957365943009}
   - component: {fileID: -720919355970157968}
   - component: {fileID: 8740265203271679594}
   - component: {fileID: 7466745554445715912}
   m_Layer: 6
-  m_Name: PF_Player
+  m_Name: PF_Player  (AB)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4353783926897525324
+--- !u!114 &5715890957365943009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6756241404292796271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bff6c770ab03a346b866f747801cbf1, type: 3}
+  m_Script: {fileID: 11500000, guid: eb1a71d3f6351a2429160b82b6338436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 5
