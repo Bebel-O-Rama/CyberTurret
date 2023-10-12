@@ -91,8 +91,8 @@ public class EnemySpawner : MonoBehaviour
 
         GameObject newEnemy = Instantiate(enemyPF, enemyPosition, Quaternion.identity);
         newEnemy.transform.parent = enemyHolder;
-        GameManager.Instance.OnEnemySpawn(newEnemy);
-        // newEnemy.GetComponent<Enemy>().InitializeEnemy(enemyData);
+        // GameManager.Instance.OnEnemySpawn(newEnemy);
+        // // newEnemy.GetComponent<Enemy>().InitializeEnemy(enemyData);
     }
 
     private Vector3 GetEnemyPosition()

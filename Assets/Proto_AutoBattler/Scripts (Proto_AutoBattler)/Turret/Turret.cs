@@ -41,39 +41,39 @@ public class Turret : MonoBehaviour
 
     private void Update()
     {
-        if (isReadyToShoot)
-        {
-            FindNewTarget();
-            if (currentTarget != null)
-            {
-                ShootTarget();
-            }
-        }
+        // if (isReadyToShoot)
+        // {
+        //     FindNewTarget();
+        //     if (currentTarget != null)
+        //     {
+        //         ShootTarget();
+        //     }
+        // }
     }
 
-    private void FindNewTarget()
-    {
-        currentTarget = null;
-        currentTargetDistance = float.PositiveInfinity;
-        List<GameObject> enemyList = GameManager.Instance.GetEnemyList();
-        foreach (var enemy in enemyList)
-        {
-            var enemyDistance = Vector3.Distance(turretPosition, enemy.transform.position);
-            if (enemyDistance <= range)
-            {
-                if (currentTarget == null || enemyDistance < range)
-                {
-                    // The wall shooting stuff doesn't work for now 
-                    if (canShootThroughWalls || !Physics.Linecast(turretPosition, enemy.transform.position))
-                    {
-                        currentTarget = enemy;
-                        currentTargetDistance = enemyDistance;
-                        currentTargetPosition = enemy.transform.position;
-                    }
-                }
-            }
-        }
-    }
+    // private void FindNewTarget()
+    // {
+    //     currentTarget = null;
+    //     currentTargetDistance = float.PositiveInfinity;
+    //     List<GameObject> enemyList = GameManager.Instance.GetEnemyList();
+    //     foreach (var enemy in enemyList)
+    //     {
+    //         var enemyDistance = Vector3.Distance(turretPosition, enemy.transform.position);
+    //         if (enemyDistance <= range)
+    //         {
+    //             if (currentTarget == null || enemyDistance < range)
+    //             {
+    //                 // The wall shooting stuff doesn't work for now 
+    //                 if (canShootThroughWalls || !Physics.Linecast(turretPosition, enemy.transform.position))
+    //                 {
+    //                     currentTarget = enemy;
+    //                     currentTargetDistance = enemyDistance;
+    //                     currentTargetPosition = enemy.transform.position;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     private void ShootTarget()
     {

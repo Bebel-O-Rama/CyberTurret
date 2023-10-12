@@ -16,8 +16,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (IsTryingToBuyTurret())
-            GameManager.Instance.WantNewTurret();
+        // if (IsTryingToBuyTurret())
+        //     GameManager.Instance.WantNewTurret();
     }
 
     // Update is called once per frame

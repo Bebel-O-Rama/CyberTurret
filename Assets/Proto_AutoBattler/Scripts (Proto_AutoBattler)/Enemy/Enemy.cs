@@ -3,25 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityHFSM;
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Enemy : MonoBehaviour
 {
     // Enemy Base Variables
-    [SerializeField] private int _baseHP = 3;
+    [SerializeField][Min(1)] private int _baseHP;
+    [SerializeField][Min(1)] private int _scrapValue;
+    [SerializeField][Min(0)] private float _baseSpeed;
+
+    // TODO Remove temporary settings used for easier testing
+    [SerializeField] [Min(0)] private float _activationDelay;
+    [SerializeField] private Color _sleepingColor;
+    [SerializeField] private Color _activatingColor;
+    [SerializeField] private Color _baseColor;
+    [SerializeField] private Color _damagedColor;
+    [SerializeField] private Color _dyingColor;
+
 
     // State Machine & States
     private StateMachine _stateMachine;
     private const string Sleeping = "Sleeping";
     private const string Activating = "Activating";
-    private const string CleanUp = "CleanUp";
     private const string Search = "Search";
     private const string Attack = "Attack";
     private const string Dying = "Dying";
+    private const string CleanUp = "CleanUp";
 
     // Current variables
-    private bool _isRoomActive;
-    private bool _isActivationOver;
-
+    private Rigidbody2D _rb;
+    private Material _mat;
+    private bool _isActive;
+    private bool _isActivationSequenceOver;
+    
     private int _currentHP;
+    private float _currentSpeed;
+    private Vector3 _targetPosition;
+
 
     private void Awake()
     {
@@ -29,11 +47,21 @@ public class Enemy : MonoBehaviour
         InitializeStateMachine();
     }
 
+    private void Update()
+    {
+        _stateMachine.OnLogic();
+    }
+
     private void InitializeEnemyVariables()
     {
-        _isRoomActive = false;
-        _isActivationOver = false;
+        _rb = GetComponent<Rigidbody2D>();
+        _mat = GetComponent<SpriteRenderer>().material;
         _currentHP = _baseHP;
+        _currentSpeed = _baseSpeed;
+        
+        _isActive = false;
+        _isActivationSequenceOver = true; // TODO Remove that
+        _mat.color = _sleepingColor;
     }
     
     private void InitializeStateMachine()
@@ -42,23 +70,38 @@ public class Enemy : MonoBehaviour
         
         _stateMachine.AddState(Sleeping, new State(onLogic: _ => { SleepingLogic(); }));
         _stateMachine.AddState(Activating, new State(onLogic: _ => { ActivatingLogic(); }));
-        _stateMachine.AddState(CleanUp, new State(onLogic: _ => { CleanUpLogic(); }));
         _stateMachine.AddState(Search, new State(onLogic: _ => { SearchLogic(); }));
         _stateMachine.AddState(Attack, new State(onLogic: _ => { AttackLogic(); }));
         _stateMachine.AddState(Dying, new State(onLogic: _ => { DyingLogic(); }));
+        _stateMachine.AddState(CleanUp, new State(onLogic: _ => { CleanUpLogic(); }));
         
-        _stateMachine.AddTransition(Sleeping, Activating, _ => _isRoomActive);
-        _stateMachine.AddTransition(Activating, Search, _ => _isActivationOver);
+        _stateMachine.AddTransition(Sleeping, Activating, _ => _isActive);
+        _stateMachine.AddTransition(Activating, Search, _ => _isActivationSequenceOver);
         _stateMachine.AddTransition(Search, Attack, _ => isTargetAcquired());
         _stateMachine.AddTransition(Attack, Search, _ => !isTargetAcquired());
         _stateMachine.AddTransition(Dying, CleanUp, _ => isDyingOver());
         
         _stateMachine.AddTransitionFromAny(Dying, _ => isDead());
+        
+        _stateMachine.SetStartState("Sleeping");
+        _stateMachine.Init();
+    }
+
+    public void ActivateEnemy()
+    {
+        _isActive = true;
+    }
+
+    private void ActivationSequenceOver()
+    {
+        _mat.color = _baseColor;
+        _isActivationSequenceOver = true;
     }
     
     #region States Logic
     /// <summary>
     /// When the player enters the room and the enemy is in "sleep mode". Initial State
+    /// TODO Figure out if we should remove the state and init the State Machine only Activation
     /// </summary>
     private void SleepingLogic()
     {
@@ -69,13 +112,8 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void ActivatingLogic()
     {
-    }
-    
-    /// <summary>
-    /// Once the enemy is death and we have nothing left to do with it, clean it up! 
-    /// </summary>
-    private void CleanUpLogic()
-    {
+        _mat.color = _activatingColor;
+        Invoke("ActivationSequenceOver", _activationDelay);
     }
 
     /// <summary>
@@ -96,6 +134,13 @@ public class Enemy : MonoBehaviour
     /// When the enemy's HP are down to zero. Any reward and feedback will be done here.
     /// </summary>
     private void DyingLogic()
+    {
+    }
+    
+    /// <summary>
+    /// Once the enemy is death and we have nothing left to do with it, clean it up! 
+    /// </summary>
+    private void CleanUpLogic()
     {
     }
     #endregion
