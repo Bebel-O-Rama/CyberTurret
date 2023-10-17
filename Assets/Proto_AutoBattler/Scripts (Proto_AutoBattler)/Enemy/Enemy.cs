@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityHFSM;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -11,9 +12,9 @@ public class Enemy : MonoBehaviour
     [SerializeField][Min(1)] private int _baseHP;
     [SerializeField][Min(1)] private int _scrapValue;
     [SerializeField][Min(0)] private float _baseSpeed;
+    [SerializeField] [Min(0)] private float _activationDelay;
 
     // TODO Remove temporary settings used for easier testing
-    [SerializeField] [Min(0)] private float _activationDelay;
     [SerializeField] private Color _sleepingColor;
     [SerializeField] private Color _activatingColor;
     [SerializeField] private Color _baseColor;
@@ -22,19 +23,20 @@ public class Enemy : MonoBehaviour
 
 
     // State Machine & States
-    private StateMachine _stateMachine;
-    private const string Sleeping = "Sleeping";
-    private const string Activating = "Activating";
+    private StateMachine _mainSM;
+    private const string Sleep = "Sleep";
+    private const string Active = "Active";
+    private const string Activation = "Activation";
+    private const string Death = "Death";
+    private StateMachine _activeSM;
     private const string Search = "Search";
     private const string Attack = "Attack";
-    private const string Dying = "Dying";
-    private const string CleanUp = "CleanUp";
 
     // Current variables
     private Rigidbody2D _rb;
     private Material _mat;
     private bool _isActive;
-    private bool _isActivationSequenceOver;
+    private NavMeshAgent _agent;
     
     private int _currentHP;
     private float _currentSpeed;
@@ -44,12 +46,13 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         InitializeEnemyVariables();
-        InitializeStateMachine();
+        InitializeSM();
     }
-
+    
     private void Update()
     {
-        _stateMachine.OnLogic();
+        _mainSM.OnLogic();
+        
     }
 
     private void InitializeEnemyVariables()
@@ -59,93 +62,102 @@ public class Enemy : MonoBehaviour
         _currentHP = _baseHP;
         _currentSpeed = _baseSpeed;
         
+        _agent = GetComponent<NavMeshAgent>();
+        _agent.updateRotation = false;
+        _agent.updatePosition = false;
+        
         _isActive = false;
-        _isActivationSequenceOver = true; // TODO Remove that
         _mat.color = _sleepingColor;
     }
-    
-    private void InitializeStateMachine()
+
+    private void InitializeSM()
     {
-        _stateMachine = new StateMachine();
+        _mainSM = new StateMachine();
+        var activeSM = new StateMachine();
+
+        _mainSM.AddState(Sleep, new State(onEnter: _ => { SleepStateLogic(); }));
+        _mainSM.AddState(Activation, new State(
+            onEnter: _ => { ActivationStateEnter(); },
+            onExit: _ => { ActivationStateExit(); }));
+        _mainSM.AddState(Active, activeSM);
+        _mainSM.AddState(Death, new State(onEnter: _ => { DeathStateEnter(); }));
+
+        activeSM.AddState(Search, new State(onLogic: _ => { SearchStateLogic(); }));
+        activeSM.AddState(Attack, new State(onLogic: _ => { AttackStateLogic(); }));
+
+        _mainSM.AddTransition(Sleep, Activation, _ => _isActive); //TODO ADD A TriggerTransition maybe?
+        _mainSM.AddTransition(new TransitionAfter(Activation, Active, _activationDelay));
+        _mainSM.AddTransition(Active, Death, _ => isDyingOver());
+
+        activeSM.AddTransitionFromAny(Death, _ => isDead());
+
+        activeSM.AddTransition(Search, Attack, _ => isTargetAcquired());
+        activeSM.AddTransition(Attack, Search, _ => !isTargetAcquired());
         
-        _stateMachine.AddState(Sleeping, new State(onLogic: _ => { SleepingLogic(); }));
-        _stateMachine.AddState(Activating, new State(onLogic: _ => { ActivatingLogic(); }));
-        _stateMachine.AddState(Search, new State(onLogic: _ => { SearchLogic(); }));
-        _stateMachine.AddState(Attack, new State(onLogic: _ => { AttackLogic(); }));
-        _stateMachine.AddState(Dying, new State(onLogic: _ => { DyingLogic(); }));
-        _stateMachine.AddState(CleanUp, new State(onLogic: _ => { CleanUpLogic(); }));
         
-        _stateMachine.AddTransition(Sleeping, Activating, _ => _isActive);
-        _stateMachine.AddTransition(Activating, Search, _ => _isActivationSequenceOver);
-        _stateMachine.AddTransition(Search, Attack, _ => isTargetAcquired());
-        _stateMachine.AddTransition(Attack, Search, _ => !isTargetAcquired());
-        _stateMachine.AddTransition(Dying, CleanUp, _ => isDyingOver());
-        
-        _stateMachine.AddTransitionFromAny(Dying, _ => isDead());
-        
-        _stateMachine.SetStartState("Sleeping");
-        _stateMachine.Init();
+        _mainSM.SetStartState("Sleeping");
+        _mainSM.Init();
     }
 
     public void ActivateEnemy()
     {
         _isActive = true;
     }
-
-    private void ActivationSequenceOver()
-    {
-        _mat.color = _baseColor;
-        _isActivationSequenceOver = true;
-    }
     
-    #region States Logic
+    
+    #region States Logic (mainSM)
     /// <summary>
     /// When the player enters the room and the enemy is in "sleep mode". Initial State
     /// TODO Figure out if we should remove the state and init the State Machine only Activation
     /// </summary>
-    private void SleepingLogic()
+    private void SleepStateLogic()
     {
     }
 
     /// <summary>
-    /// When the player triggers the start of the room. 
+    /// When the player triggers the start of the room. OnEnter
     /// </summary>
-    private void ActivatingLogic()
+    private void ActivationStateEnter()
     {
         _mat.color = _activatingColor;
-        Invoke("ActivationSequenceOver", _activationDelay);
     }
 
+    /// <summary>
+    /// Once the activation sequence is over. OnExit
+    /// </summary>
+    private void ActivationStateExit()
+    {
+        _mat.color = _baseColor;
+        // TODO Enable the enemy's hurtbox
+    }
+
+    /// <summary>
+    /// When the enemy's HP are down to zero. Play death sequence, give reward and then do a cleanup.
+    /// </summary>
+    private void DeathStateEnter()
+    {
+    }
+    #endregion
+
+    #region States Logic (activeSM)
     /// <summary>
     /// When the enemy is searching for a target
     /// </summary>
-    private void SearchLogic()
+    private void SearchStateLogic()
     {
     }
     
     /// <summary>
     /// When the enemy have a target to attack
     /// </summary>
-    private void AttackLogic()
+    private void AttackStateLogic()
     {
     }
     
-    /// <summary>
-    /// When the enemy's HP are down to zero. Any reward and feedback will be done here.
-    /// </summary>
-    private void DyingLogic()
-    {
-    }
-    
-    /// <summary>
-    /// Once the enemy is death and we have nothing left to do with it, clean it up! 
-    /// </summary>
-    private void CleanUpLogic()
-    {
-    }
+
     #endregion
     
-    #region Transition Logic
+    #region Transition Logic (mainSM)
 
     private bool isTargetAcquired()
     {
@@ -165,6 +177,10 @@ public class Enemy : MonoBehaviour
     }
     
     #endregion
+    
+    #region Transition Logic (activeSM)
+    #endregion
+    
     
     //
     // CODE FROM THE ORIGINAL PROTOTYPE
