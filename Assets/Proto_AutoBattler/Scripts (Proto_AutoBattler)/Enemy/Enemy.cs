@@ -8,30 +8,20 @@ using UnityHFSM;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Enemy : MonoBehaviour
 {
-    // Enemy Base Variables
-    [SerializeField][Min(1)] private int _baseHP;
-    [SerializeField][Min(1)] private int _scrapValue;
-    [SerializeField][Min(0)] private float _baseSpeed;
-    [SerializeField] [Min(0)] private float _activationDelay;
+    // Enemy Data
+    [SerializeField] private EnemyData _enemyData; //TODO Find a better way to fill the data
 
-    // TODO Remove temporary settings used for easier testing
-    [SerializeField] private Color _sleepingColor;
-    [SerializeField] private Color _activatingColor;
-    [SerializeField] private Color _baseColor;
-    [SerializeField] private Color _damagedColor;
-    [SerializeField] private Color _dyingColor;
-
-
-    // State Machine & States
+    // State Machines & States
     private StateMachine _mainSM;
     private const string Sleep = "Sleep";
-    private const string Active = "Active";
     private const string Activation = "Activation";
-    private const string Death = "Death";
-    private StateMachine _activeSM;
     private const string Search = "Search";
     private const string Attack = "Attack";
-
+    private const string Death = "Death";
+    
+    // Triggers
+    private const string RoomActivated = "RoomActivated";
+    
     // Current variables
     private Rigidbody2D _rb;
     private Material _mat;
@@ -42,11 +32,10 @@ public class Enemy : MonoBehaviour
     private float _currentSpeed;
     private Vector3 _targetPosition;
 
-
     private void Awake()
     {
         InitializeEnemyVariables();
-        InitializeSM();
+        SetupSM();
     }
     
     private void Update()
@@ -59,59 +48,65 @@ public class Enemy : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _mat = GetComponent<SpriteRenderer>().material;
-        _currentHP = _baseHP;
-        _currentSpeed = _baseSpeed;
+        _currentHP = _enemyData.baseHP;
+        _currentSpeed = _enemyData.baseSpeed;
         
         _agent = GetComponent<NavMeshAgent>();
         _agent.updateRotation = false;
         _agent.updatePosition = false;
         
         _isActive = false;
-        _mat.color = _sleepingColor;
+        _mat.color = _enemyData.sleepingColor;
     }
 
-    private void InitializeSM()
+    private void SetupSM()
     {
         _mainSM = new StateMachine();
-        var activeSM = new StateMachine();
 
-        _mainSM.AddState(Sleep, new State(onEnter: _ => { SleepStateLogic(); }));
+        _mainSM.AddState(Sleep, new State(onEnter: _ => { SleepStateEnter(); }));
         _mainSM.AddState(Activation, new State(
             onEnter: _ => { ActivationStateEnter(); },
             onExit: _ => { ActivationStateExit(); }));
-        _mainSM.AddState(Active, activeSM);
+        _mainSM.AddState(Search, new State(onEnter: _ => { SearchStateEnter(); }));
+        _mainSM.AddState(Attack, new State(onEnter: _ => { AttackStateEnter(); }));
         _mainSM.AddState(Death, new State(onEnter: _ => { DeathStateEnter(); }));
-
-        activeSM.AddState(Search, new State(onLogic: _ => { SearchStateLogic(); }));
-        activeSM.AddState(Attack, new State(onLogic: _ => { AttackStateLogic(); }));
-
-        _mainSM.AddTransition(Sleep, Activation, _ => _isActive); //TODO ADD A TriggerTransition maybe?
-        _mainSM.AddTransition(new TransitionAfter(Activation, Active, _activationDelay));
-        _mainSM.AddTransition(Active, Death, _ => isDyingOver());
-
-        activeSM.AddTransitionFromAny(Death, _ => isDead());
-
-        activeSM.AddTransition(Search, Attack, _ => isTargetAcquired());
-        activeSM.AddTransition(Attack, Search, _ => !isTargetAcquired());
         
-        
-        _mainSM.SetStartState("Sleeping");
+        _mainSM.AddTransitionFromAny(Death, _ => isDead());
+        _mainSM.AddTwoWayTransition(Search, Attack, _ => isTargetAcquired());
+        _mainSM.AddTransition(new TransitionAfter(Activation, Search, ActivationDelay()));
+        _mainSM.AddTriggerTransition(RoomActivated, Sleep, Activation);
+
+        _mainSM.SetStartState(Sleep);
         _mainSM.Init();
     }
-
-    public void ActivateEnemy()
+    
+    // Called by outside when the room gets activated by the player, starting the fight.
+    public void Activate()
     {
-        _isActive = true;
+        _mainSM.Trigger(RoomActivated);
     }
     
-    
-    #region States Logic (mainSM)
-    /// <summary>
-    /// When the player enters the room and the enemy is in "sleep mode". Initial State
-    /// TODO Figure out if we should remove the state and init the State Machine only Activation
-    /// </summary>
-    private void SleepStateLogic()
+    // We could add stuff like "DmgType" here. It's the method that should be called from outside when the enemy takes damage 
+    public void OnHit(int hitDmg)
     {
+        var naturalDmg = HitMitigation(hitDmg); 
+        // if 
+
+    }
+
+    // Here's where we should deal with any calculation of hit mitigation.
+    private int HitMitigation(int hitDmg)
+    {
+        return hitDmg >= 0 ? hitDmg : 0; //Just to make sure that we don't get "negative dmg" for any reason
+    }
+    
+    #region States Logic (_mainSM)
+    /// <summary>
+    /// When the enemy is enabled, but still sleeping. OnEnter
+    /// </summary>
+    private void SleepStateEnter()
+    {
+        _mat.color = _enemyData.sleepingColor; // Might already be set, it's just for testing
     }
 
     /// <summary>
@@ -119,7 +114,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void ActivationStateEnter()
     {
-        _mat.color = _activatingColor;
+        _mat.color = _enemyData.activatingColor;
     }
 
     /// <summary>
@@ -127,38 +122,35 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void ActivationStateExit()
     {
-        _mat.color = _baseColor;
         // TODO Enable the enemy's hurtbox
     }
 
+    /// <summary>
+    /// When the enemy starts searching. OnEnter
+    /// </summary>
+    private void SearchStateEnter()
+    {
+        _mat.color = _enemyData.searchColor;
+    }    
+    
+    /// <summary>
+    /// When the enemy starts attacking. OnEnter
+    /// </summary>
+    private void AttackStateEnter()
+    {
+        _mat.color = _enemyData.attackColor;
+    }
+    
     /// <summary>
     /// When the enemy's HP are down to zero. Play death sequence, give reward and then do a cleanup.
     /// </summary>
     private void DeathStateEnter()
     {
+        _mat.color = _enemyData.dyingColor;
     }
     #endregion
 
-    #region States Logic (activeSM)
-    /// <summary>
-    /// When the enemy is searching for a target
-    /// </summary>
-    private void SearchStateLogic()
-    {
-    }
-    
-    /// <summary>
-    /// When the enemy have a target to attack
-    /// </summary>
-    private void AttackStateLogic()
-    {
-    }
-    
-
-    #endregion
-    
-    #region Transition Logic (mainSM)
-
+    #region Transition Logic (_mainSM)
     private bool isTargetAcquired()
     {
         //TODO : Find a better method name AND add logic to the targeting
@@ -170,18 +162,14 @@ public class Enemy : MonoBehaviour
         return _currentHP <= 0;
     }
 
-    private bool isDyingOver()
+    private float ActivationDelay()
     {
-        //TODO : Find a better method name AND add logic to the dying state
-        return true;
+        // TODO : We should generate the delay based on the starting animation/SFX/effect
+        return _enemyData.activationDelay;
     }
-    
     #endregion
-    
-    #region Transition Logic (activeSM)
-    #endregion
-    
-    
+
+
     //
     // CODE FROM THE ORIGINAL PROTOTYPE
     //
