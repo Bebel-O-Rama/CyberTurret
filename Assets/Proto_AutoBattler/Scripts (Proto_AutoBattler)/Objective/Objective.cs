@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Objective : MonoBehaviour
 {
-    [SerializeField] public int initialHP;
-    [SerializeField] public int currentHP;
+    [SerializeField] public int _initialHP;
+    [SerializeField] public int _currentHP;
 }

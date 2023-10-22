@@ -2593,7 +2593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6679928139112910251, guid: 2ac816d6a9268e34ca49438981d8fcb6, type: 3}
       propertyPath: m_Name
-      value: PF_Objective  (AB)
+      value: PF_ObjectiveHolder (AB)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4920,7 +4920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6756241404292796271, guid: 2cfc6e6e8211fc54abbda06cc9b82b5b, type: 3}
       propertyPath: m_Name
-      value: PF_Player  (AB)
+      value: PF_Player (AB)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

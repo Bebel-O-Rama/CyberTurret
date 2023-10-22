@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2630987424270062756}
   - component: {fileID: 4841974153748517033}
   m_Layer: 9
-  m_Name: PF_Turret  (AB)
+  m_Name: PF_Turret (AB)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
