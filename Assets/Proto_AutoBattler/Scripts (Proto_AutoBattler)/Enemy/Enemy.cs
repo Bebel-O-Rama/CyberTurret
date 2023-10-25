@@ -32,18 +32,32 @@ public class Enemy : MonoBehaviour
     private float _currentSpeed;
     private Vector3 _targetPosition;
 
-    private void Awake()
-    {
-        InitializeEnemyVariables();
-        SetupSM();
-    }
-    
     private void Update()
     {
         _mainSM.OnLogic();
         
     }
+    
+    public void OnInstantiation(EnemyData enemyData)
+    {
+        _enemyData = enemyData;
+        InitializeEnemyVariables();
+        SetupSM();
+    }
 
+    // Called by outside when the room gets activated by the player, starting the fight.
+    public void Activate()
+    {
+        _mainSM.Trigger(RoomActivated);
+    }
+    
+    // We could add stuff like "DmgType" here. It's the method that should be called from outside when the enemy takes damage 
+    public void OnHit(int hitDmg)
+    {
+        var naturalDmg = HitMitigation(hitDmg);
+        _currentHP -= naturalDmg;
+    }
+    
     private void InitializeEnemyVariables()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -79,20 +93,6 @@ public class Enemy : MonoBehaviour
         _mainSM.SetStartState(Sleep);
         _mainSM.Init();
     }
-    
-    // Called by outside when the room gets activated by the player, starting the fight.
-    public void Activate()
-    {
-        _mainSM.Trigger(RoomActivated);
-    }
-    
-    // We could add stuff like "DmgType" here. It's the method that should be called from outside when the enemy takes damage 
-    public void OnHit(int hitDmg)
-    {
-        var naturalDmg = HitMitigation(hitDmg); 
-        // if 
-
-    }
 
     // Here's where we should deal with any calculation of hit mitigation.
     private int HitMitigation(int hitDmg)
@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour
         return hitDmg >= 0 ? hitDmg : 0; //Just to make sure that we don't get "negative dmg" for any reason
     }
     
-    #region States Logic (_mainSM)
+    #region State Logic (_mainSM)
     /// <summary>
     /// When the enemy is enabled, but still sleeping. OnEnter
     /// </summary>

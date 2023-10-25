@@ -1162,78 +1162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9117b6d975111c47b064a4373cc67ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &583022592 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1277096967047669039, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-  m_PrefabInstance: {fileID: 595820972}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fb614d94db1c340b48057828a2befb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1001 &595820972
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1277096967047669039, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: _enemyData
-      value: 
-      objectReference: {fileID: 11400000, guid: d42862db26560bc458526d7a89a7d52f, type: 2}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.48
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.77
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4678622971506822971, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7244667333223052984, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
-      propertyPath: m_Name
-      value: PF_Enemy (AB)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 154beb7bb7b96ee408fed642961bceed, type: 3}
 --- !u!1 &608813409
 GameObject:
   m_ObjectHideFlags: 0
@@ -2595,6 +2523,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_ObjectiveHolder (AB)
       objectReference: {fileID: 0}
+    - target: {fileID: 6679928139112910251, guid: 2ac816d6a9268e34ca49438981d8fcb6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3777,7 +3709,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 160674ed922ffe245929877309f3c7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  en: {fileID: 583022592}
+  roomData:
+  - {fileID: 11400000, guid: aee0d9bd2bffbb74d9c4900370a5b35f, type: 2}
+  podMaxHP: 5
+  currentRoomName: 
+  currentRoomEnemies: []
 --- !u!1 &1506003807
 GameObject:
   m_ObjectHideFlags: 0
@@ -5325,4 +5261,3 @@ SceneRoots:
   - {fileID: 105024387}
   - {fileID: 2024287875}
   - {fileID: 31906665}
-  - {fileID: 595820972}

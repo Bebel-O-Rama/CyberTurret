@@ -1,32 +1,140 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
+using System.Linq;
 using UnityEngine;
+using UnityHFSM;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public Enemy en;
+    [Header("Editable Game Variables")]
+    [SerializeField] public List<RoomData> roomData;
+    [SerializeField] [Min(1)] public int podMaxHP = 1;
+    
+    [Header("READ ONLY")]
+    [SerializeField] public string currentRoomName;
+    [SerializeField] public List<Enemy> currentRoomEnemies;
+    
+    // Hidden Variables
+    private Player _player;
+    private List<Enemy> _enemies;
+    private bool _isCurrentRoomLoaded;
+    private bool _isCurrentRoomActive;
+    private bool _isCurrentRoomCleared;
+    private int _podCurrentHP;
+
+    // State Machine & States
+    private StateMachine _mainSM;
+    private const string LoadRoom = "LoadRoom";
+    private const string Planning = "Planning";
+    private const string Combat = "Combat";
+    private const string Death = "Death";
+    private const string Cleared = "Cleared";
+
+    public static GameManager Instance => _instance ??= new GameManager();
+    private static GameManager _instance;
+
+    private GameManager()
+    {
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+        InitializeVariables();
+        SetupSM();
+    }
+
     private void Update()
     {
-        if (Input.anyKey)
+        _mainSM.OnLogic();
+        // Shit code to test stuff
+        if (Input.GetKey(KeyCode.Z))
+            _isCurrentRoomActive = true;
+        if (Input.GetKey(KeyCode.X))
+            _isCurrentRoomCleared = true;
+    }
+    
+    public void DamagePod(int hitDmg)
+    {
+        _podCurrentHP -= hitDmg;
+        if (_podCurrentHP > 0)
+            PodDmgFeedback();
+    }
+
+    private void InitializeVariables()
+    {
+        _player = FindObjectOfType<Player>();
+        _isCurrentRoomLoaded = false;
+        _isCurrentRoomActive = false;
+        _isCurrentRoomCleared = false;
+        _podCurrentHP = podMaxHP;
+    }
+
+    private void SetupSM()
+    {
+        _mainSM = new StateMachine();
+
+        _mainSM.AddState(LoadRoom, new State(onEnter: _ => { LoadRoomStateEnter(); }));
+        _mainSM.AddState(Planning, new State(onEnter: _ => { PlanningStateEnter(); }));
+        _mainSM.AddState(Combat, new State(onEnter: _ => { CombatStateEnter(); }));
+        _mainSM.AddState(Death, new State(onEnter: _ => { DeathStateEnter(); }));
+        _mainSM.AddState(Cleared, new State(onEnter: _ => { ClearedStateEnter(); }));
+
+        _mainSM.AddTransition(Combat, Death, transition => _podCurrentHP <= 0);
+        _mainSM.AddTransition(Combat, Cleared, transition => _isCurrentRoomCleared);
+        _mainSM.AddTransition(LoadRoom, Planning, transition => _isCurrentRoomLoaded);
+        _mainSM.AddTransition(Planning, Combat, transition => _isCurrentRoomActive);
+        
+        _mainSM.SetStartState(LoadRoom);
+        _mainSM.Init();
+    }
+
+    private void PodDmgFeedback()
+    {
+    }
+
+    #region State Logic (_mainSM)
+
+    private void LoadRoomStateEnter()
+    {
+        Debug.Log("Enter loading state");
+        // Hardcoded the first room to be read, will be updated once we can manage multiple rooms
+        roomData[0].SpawnEnemy();
+        // Once that's done, update the room's name
+        currentRoomName = roomData[0].roomName;
+        // And then, fetch all the instance of "Enemy" in the game (I know, it's a lot of "Find", but for now whatever... 
+        currentRoomEnemies = new List<Enemy>(FindObjectsByType<Enemy>(FindObjectsSortMode.None));
+        
+        // Set the currentRoom as loaded
+        _isCurrentRoomLoaded = true;
+    }
+
+    private void PlanningStateEnter()
+    {
+        Debug.Log("Enter planning state");
+    }
+
+    private void CombatStateEnter()
+    {
+        Debug.Log("Enter combat state");
+        foreach (var enemy in currentRoomEnemies)
         {
-            en.Activate();
+            enemy.Activate();
         }
     }
 
-    public static GameManager Instance => _instance ??= new GameManager();
-     private static GameManager _instance;
+    private void DeathStateEnter()
+    {
+        Debug.Log("Enter death state");
+    }
 
-     private GameManager()
-     {
-     }
+    private void ClearedStateEnter()
+    {
+        Debug.Log("Enter clear state");
+    }
 
-     private void Awake()
-     {
-         _instance = this;
-     }
-    
+    #endregion
 
     // PREVIOUS GAMEMANAGER CODE
     //    
