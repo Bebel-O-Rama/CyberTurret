@@ -1,22 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks.Sources;
 using UnityEngine;
 
 [CreateAssetMenu]
 public class RoomData : ScriptableObject
 {
     public string roomName;
-    [Header("Minimum 1 enemy")]
-    public RoomEnemy[] roomEnemies;
-    
+    [Header("Minimum 1 enemy")] public RoomEnemy[] roomEnemies;
+
     public void SpawnEnemy()
     {
-        GameObject enemyPF = Resources.Load<GameObject>("Prefabs/PF_Enemy (AB)"); // Temporary mesure since I currently use a single PF for the enemies
+        GameObject
+            enemyPF = Resources.Load<GameObject>(
+                "Prefabs/PF_Enemy (AB)"); // Temporary mesure since I currently use a single PF for the enemies
         foreach (var enemy in roomEnemies)
         {
-            enemy.enemyData.SpawnEnemy(enemyPF, enemy.initialPosition, enemy.healthMultiplier, enemy.speedMultiplier, enemy.damageMultipler);
+            enemy.enemyData.SpawnEnemy(enemyPF, enemy.initialPosition, enemy.healthMultiplier, enemy.speedMultiplier,
+                enemy.damageMultipler);
         }
     }
 
