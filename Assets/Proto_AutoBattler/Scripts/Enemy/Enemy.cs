@@ -35,7 +35,6 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         _mainSM.OnLogic();
-        
     }
     
     public void OnInstantiation(EnemyData enemyData)
