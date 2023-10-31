@@ -5,6 +5,7 @@ using UnityEngine;
 public class ObjectiveHolder : MonoBehaviour
 {
     private Vector3 _objectivePosition;
+    private Objective obj;
 
     private void Awake()
     {

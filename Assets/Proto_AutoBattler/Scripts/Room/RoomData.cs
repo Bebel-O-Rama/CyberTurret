@@ -4,13 +4,16 @@ using UnityEngine;
 public class RoomData : ScriptableObject
 {
     public string roomName;
+    public Vector3 objectiveHolderPosition;
     [Header("Minimum 1 enemy")] public RoomEnemy[] roomEnemies;
 
     public void SpawnEnemy()
     {
-        GameObject
-            enemyPF = Resources.Load<GameObject>(
-                "Prefabs/PF_Enemy (AB)"); // Temporary mesure since I currently use a single PF for the enemies
+        // Fetching the pf like that is temporary 
+        GameObject objHolderPF = Resources.Load<GameObject>("Prefabs/PF_ObjectiveHolder");
+        GameObject enemyPF = Resources.Load<GameObject>("Prefabs/PF_Enemy");
+
+        Instantiate(objHolderPF, objectiveHolderPosition, Quaternion.identity);
         foreach (var enemy in roomEnemies)
         {
             enemy.enemyData.SpawnEnemy(enemyPF, enemy.initialPosition, enemy.healthMultiplier, enemy.speedMultiplier,

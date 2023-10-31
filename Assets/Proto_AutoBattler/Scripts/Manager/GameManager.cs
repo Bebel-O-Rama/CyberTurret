@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     private const string Death = "Death";
     private const string Cleared = "Cleared";
 
+    private const string DeathTrigger = "DeathTrigger";
+
     public static GameManager Instance => _instance ??= new GameManager();
     private static GameManager _instance;
 
@@ -55,11 +57,9 @@ public class GameManager : MonoBehaviour
             _isCurrentRoomCleared = true;
     }
     
-    public void DamagePod(int hitDmg)
+    public void ObjectiveDead()
     {
-        _podCurrentHP -= hitDmg;
-        if (_podCurrentHP > 0)
-            PodDmgFeedback();
+        _mainSM.Trigger(DeathTrigger);
     }
 
     private void InitializeVariables()
@@ -81,17 +81,13 @@ public class GameManager : MonoBehaviour
         _mainSM.AddState(Death, new State(onEnter: _ => { DeathStateEnter(); }));
         _mainSM.AddState(Cleared, new State(onEnter: _ => { ClearedStateEnter(); }));
 
-        _mainSM.AddTransition(Combat, Death, transition => _podCurrentHP <= 0);
+        _mainSM.AddTriggerTransition(DeathTrigger, Combat, Death);
         _mainSM.AddTransition(Combat, Cleared, transition => _isCurrentRoomCleared);
         _mainSM.AddTransition(LoadRoom, Planning, transition => _isCurrentRoomLoaded);
         _mainSM.AddTransition(Planning, Combat, transition => _isCurrentRoomActive);
         
         _mainSM.SetStartState(LoadRoom);
         _mainSM.Init();
-    }
-
-    private void PodDmgFeedback()
-    {
     }
 
     #region State Logic (_mainSM)

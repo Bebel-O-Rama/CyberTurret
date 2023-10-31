@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 6960029839295609354}
   - component: {fileID: -2075713675458946252}
   m_Layer: 0
-  m_Name: PF_ObjectiveHolder (AB)
+  m_Name: PF_ObjectiveHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

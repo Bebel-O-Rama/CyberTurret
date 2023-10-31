@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4678622971506822971}
-  - component: {fileID: 2039471177395678731}
+  - component: {fileID: 1277096967047669039}
   - component: {fileID: 3750393475302215070}
   - component: {fileID: 2157687792001501660}
   - component: {fileID: -7255361406842374762}
   - component: {fileID: 8697219284904018012}
   m_Layer: 8
-  m_Name: PF_Character
+  m_Name: PF_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2039471177395678731
+--- !u!114 &1277096967047669039
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,9 +45,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7244667333223052984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4715cafd725c84880d6890446f0cff, type: 3}
+  m_Script: {fileID: 11500000, guid: d7fb614d94db1c340b48057828a2befb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyData: {fileID: 0}
 --- !u!212 &3750393475302215070
 SpriteRenderer:
   m_ObjectHideFlags: 0

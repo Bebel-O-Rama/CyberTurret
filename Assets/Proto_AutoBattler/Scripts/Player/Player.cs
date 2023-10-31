@@ -7,9 +7,9 @@ public class Player : MonoBehaviour
     // Player Vars
     [SerializeField][Min(0f)] public float MovementSpeed = 5;
 
+    private Rigidbody2D _rb;
     // Testing variable (DON'T EDIT MANUALLY)
     [SerializeField] private Objective obj;
-    private Rigidbody2D _rb;
     
     // Start is called before the first frame update
     private void Awake()
@@ -17,11 +17,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
-    {
-    }
-
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         MovementLogic();
     }
@@ -34,8 +30,5 @@ public class Player : MonoBehaviour
         _rb.velocity = direction.normalized * MovementSpeed;
     }
     
-    public Vector3 GetPlayerPosition()
-    {
-        return transform.position;
-    }
+    
 }
