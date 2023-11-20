@@ -21,7 +21,9 @@ Shader "Hidden/Nova/NovaUIBlock3DUnlit"
         Pass
         {
             ZWrite [_ZWrite]
-            Blend [_SrcBlend] [_DstBlend]
+            // Separate alpha blend to avoid setting the render target
+            // alpha value to be < 1
+            Blend [_SrcBlend] [_DstBlend], One OneMinusSrcAlpha
             Lighting Off
             Cull [_CullMode]
             Tags { "DisableBatching" = "True" }

@@ -493,7 +493,15 @@ namespace Nova
             // we were previously at, remove the items that are now outside the data source count bounds
             while (highestPagedInIndex >= DataSourceItemCount && highestPagedInIndex >= lowestPagedInIndex)
             {
-                RemoveFromBack();
+                if (highestPagedInIndex % SecondaryAxisItemCount == 0)
+                {
+                    PageOutItem(fromFront: false);
+                }
+                else
+                {
+                    RemoveFromBack();
+                }
+
                 removedSomething = true;
             }
 
@@ -546,38 +554,59 @@ namespace Nova
         {
             UIBlock.CalculateLayout();
 
-            float scroll = 0;
-
             AutoLayout autoLayout = UIBlock.GetAutoLayoutReadOnly();
 
-            if (autoLayout.Axis.TryGetIndex(out int axis))
+            if (!autoLayout.Axis.TryGetIndex(out int axis))
             {
-                float viewport = View.ScrollRange[axis];
+                return;
+            }
 
-                if (View.EstimatedTotalContentSize <= viewport && DataSourceItemCount > 0)
+            float scroll = 0;
+
+            if (View.EstimatedTotalContentSize <= View.ScrollRange[axis] && DataSourceItemCount > 0)
+            {
+                int index = TryGetItemView(0, out _) ? DataSourceItemCount - 1 : 0;
+
+                // If all the content fits within the viewport, just
+                // jump to the first page and adjust the offset from there.
+                scroll = JumpToIndexPageInternal(index, syncToVirtualizer: false);
+            }
+            else
+            {
+                // Handle case where viewport is filled along primary
+                // axis but cross axis is not fully populated
+                while ((highestPagedInIndex + 1) % SecondaryAxisItemCount != 0 &&
+                       highestPagedInIndex < DataSourceItemCount - 1)
                 {
-                    // If all the context fits within the viewport, just
-                    // jump to the first page and adjust the offset from there.
-                    scroll = JumpToIndexPageInternal(autoLayout.ReverseOrder ? DataSourceItemCount - 1 : 0, syncToVirtualizer: false);
+                    PageInNextItem(rebuildLayout: false);
                 }
-                else if (highestPagedInIndex == DataSourceItemCount - 1)
+
+                bool atPositiveEnd = !View.HasContentInDirection(1);
+                bool atNegativeEnd = !View.HasContentInDirection(-1);
+
+                float contentCenter = UIBlock.ContentCenter[axis];
+                float contentSize = UIBlock.ContentSize[axis];
+                float viewportSize = UIBlock.PaddedSize[axis];
+                float viewportCenter = UIBlock.CalculatedPadding.Offset[axis];
+
+                float contentExtent = contentSize * 0.5f;
+                float contentMin = contentCenter - contentExtent;
+                float contentMax = contentCenter + contentExtent;
+                float viewportExtent = viewportSize * 0.5f;
+                float viewportMin = viewportCenter - viewportExtent;
+                float viewportMax = viewportCenter + viewportExtent;
+
+                if (atPositiveEnd && contentMax < viewportMax)
                 {
-                    // if we're at the end of the list, adjust the offset to fill
-                    // the view, since nothing will be paged in to fill that empty gap.
-                    float scalar = autoLayout.Alignment == 0 ? -1 : autoLayout.Alignment * 0.5f;
-                    scroll = autoLayout.Offset * scalar;
+                    scroll = viewportMax - contentMax;
+                }
+                else if (atNegativeEnd && contentMin > viewportMin)
+                {
+                    scroll = viewportMin - contentMin;
                 }
             }
 
             Scroll(scroll);
-
-            if (lowestPagedInIndex == 0 && highestPagedInIndex == DataSourceItemCount - 1)
-            {
-                // When everything is in view, shift content to point of alignment
-                UIBlock.AutoLayout.Offset = 0;
-                UIBlock.CalculateLayout();
-                viewportVirtualizer.SyncToRoot();
-            }
         }
 
         /// <summary>
@@ -852,7 +881,6 @@ namespace Nova
                 }
 
                 float direction = layout.ContentDirection;
-
 
                 int outgoingCount = Mathf.Clamp(lowestPagedInIndex, 0, DataSourceItemCount - 1);
                 int incomingCount = DataSourceItemCount - Mathf.Clamp(highestPagedInIndex, 0, DataSourceItemCount - 1) - 1;

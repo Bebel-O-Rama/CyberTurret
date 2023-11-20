@@ -101,7 +101,7 @@ namespace Nova.Internal.Rendering
             {
                 ScreenSpaces.Add(screenSpace);
             }
-            RootDataStore.ScreenSpaceCameraTargets[dataStoreID] = screenSpace.CameraID;
+            RootDataStore.AddScreenSpaceRoot(dataStoreID, screenSpace);
             DirtyChildSortGroups(dataStoreID);
         }
 
@@ -112,7 +112,7 @@ namespace Nova.Internal.Rendering
                 ScreenSpaces.Remove(screenSpace);
             }
 
-            RootDataStore.ScreenSpaceCameraTargets.Remove(dataStoreID);
+            RootDataStore.RemoveScreenSpaceRoot(dataStoreID);
             DirtyChildSortGroups(dataStoreID);
         }
 

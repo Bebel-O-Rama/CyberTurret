@@ -117,7 +117,7 @@ namespace Nova.Editor.GUIs
 
         }
 
-        public static void DrawEditor()
+        public static void DrawEditor(SerializedObject serializedObject)
         {
             using Foldout foldout = NovaGUI.EditorPrefFoldoutHeader("Editor");
 
@@ -155,6 +155,28 @@ namespace Nova.Editor.GUIs
             {
                 NovaEditorPrefs.HierarchyGizmosEnabled = hierarchyGizmos;
             }
+
+            NovaGUI.Layout.EndHorizontal();
+
+            EditorGUILayout.Space();
+
+            NovaGUI.Layout.BeginHorizontal();
+
+            // This is an indent
+            NovaGUI.Space(NovaGUI.Layout.FoldoutArrowIndentSpace);
+
+            NovaGUI.Layout.BeginVertical();
+
+            EditorGUILayout.LabelField("Controls", EditorStyles.boldLabel);
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.ButtonPrefab)));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.TogglePrefab)));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.SliderPrefab)));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.DropdownPrefab)));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.TextFieldPrefab)));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.ScrollViewPrefab)));
+            EditorGUILayout.ObjectField(serializedObject.FindProperty(nameof(NovaSettings.UIRootPrefab)));
+
+            NovaGUI.Layout.EndVertical();
 
             NovaGUI.Layout.EndHorizontal();
 

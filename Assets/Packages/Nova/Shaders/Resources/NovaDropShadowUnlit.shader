@@ -19,7 +19,9 @@ Shader "Hidden/Nova/NovaDropShadowUnlit"
             Tags { "Queue" = "Transparent" "RenderType" = "Transparent" "DisableBatching" = "True" }
 
             ZWrite Off
-            Blend [_SrcBlend] [_DstBlend]
+            // Separate alpha blend to avoid setting the render target
+            // alpha value to be < 1
+            Blend [_SrcBlend] [_DstBlend], One OneMinusSrcAlpha
             Lighting Off
             Tags { "DisableBatching" = "True" }
             Cull [_CullMode]

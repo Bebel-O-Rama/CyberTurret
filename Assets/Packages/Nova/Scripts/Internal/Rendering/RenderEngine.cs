@@ -583,6 +583,7 @@ namespace Nova.Internal.Rendering
             cameraSorter.CoplanarSets = BatchGroupDataStore.CoplanarSets;
             cameraSorter.SortGroupHierarchyInfo = SortGroupHierarchyInfo;
             cameraSorter.ScreenSpaceCameraTargets = DataStore.RootDataStore.ScreenSpaceCameraTargets;
+            cameraSorter.ScreenSpaceAdditionalCameras = DataStore.RootDataStore.ScreenSpaceAdditionalCameras;
 
             engineRunner = new RenderEngineRunner()
             {

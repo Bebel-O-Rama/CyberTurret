@@ -44,7 +44,12 @@ namespace Nova.Editor
                 MarkDirty(false);
             }
 
-            NovaSettingsEditors.DrawEditor();
+            EditorGUI.BeginChangeCheck();
+            NovaSettingsEditors.DrawEditor(serializedObject);
+            if (EditorGUI.EndChangeCheck())
+            {
+                MarkDirty(false);
+            }
 
             Foldout.InProjectSettings = false;
         }

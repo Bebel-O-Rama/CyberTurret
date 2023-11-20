@@ -25,6 +25,11 @@ namespace NovaSamples.UIControls
         [Tooltip("The color to apply to the Background when this control is pressed.")]
         public Color PressedColor = Color.HSVToRGB(0, 0, 0.5f); // darker grey
 
+        private AnimationHandle colorAnimationHandle = default;
+
+        [Min(0), Tooltip("The duration of the transition animation. Only applicable when \"Transition Type\" is set to \"Color Change\".")]
+        public float TransitionDuration = 0.1f;
+
         /// <summary>
         /// The set of sprites to use when <see cref="TransitionType"/> is set to <see cref="TransitionType.SpriteSwap"/>.
         /// </summary>
@@ -111,7 +116,12 @@ namespace NovaSamples.UIControls
                 return;
             }
 
-            TransitionTarget.Color = targetColor;
+            colorAnimationHandle.Cancel();
+            colorAnimationHandle = new ControlColorAnimation()
+            {
+                Target = TransitionTarget,
+                TargetColor = targetColor,
+            }.Run(TransitionDuration);
         }
 
         /// <summary>
@@ -163,10 +173,7 @@ namespace NovaSamples.UIControls
         /// </summary>
         /// <param name="evt">The hover event.</param>
         /// <param name="control">The <see cref="ItemVisuals"/> receiving the press event.</param>
-        public static void HandleHovered(Gesture.OnHover evt, UIControlVisuals control)
-        {
-            control.UpdateVisualState(VisualState.Hovered);
-        }
+        public static void HandleHovered(Gesture.OnHover evt, UIControlVisuals control) => control.UpdateVisualState(VisualState.Hovered);
 
         /// <summary>
         /// A utility method to restore the visual state of <see cref="UIControlVisuals"/> object when it's unhovered.
@@ -181,10 +188,7 @@ namespace NovaSamples.UIControls
         /// </summary>
         /// <param name="evt">The unhover event.</param>
         /// <param name="control">The <see cref="ItemVisuals"/> receiving the press event.</param>
-        public static void HandleUnhovered(Gesture.OnUnhover evt, UIControlVisuals control)
-        {
-            control.UpdateVisualState(VisualState.Default);
-        }
+        public static void HandleUnhovered(Gesture.OnUnhover evt, UIControlVisuals control) => control.UpdateVisualState(VisualState.Default);
 
         /// <summary>
         /// A utility method to indicate a pressed visual state of <see cref="UIControlVisuals"/> object.
@@ -199,10 +203,7 @@ namespace NovaSamples.UIControls
         /// </summary>
         /// <param name="evt">The press event.</param>
         /// <param name="control">The <see cref="ItemVisuals"/> receiving the press event.</param>
-        public static void HandlePressed(Gesture.OnPress evt, UIControlVisuals control)
-        {
-            control.UpdateVisualState(VisualState.Pressed);
-        }
+        public static void HandlePressed(Gesture.OnPress evt, UIControlVisuals control) => control.UpdateVisualState(VisualState.Pressed);
 
         /// <summary>
         /// A utility method to restore the visual state of <see cref="UIControlVisuals"/> object when its active gesture is released.
@@ -217,10 +218,7 @@ namespace NovaSamples.UIControls
         /// </summary>
         /// <param name="evt">The release event.</param>
         /// <param name="control">The <see cref="ItemVisuals"/> receiving the release event.</param>
-        public static void HandleReleased(Gesture.OnRelease evt, UIControlVisuals control)
-        {
-            control.UpdateVisualState(evt.Hovering ? VisualState.Hovered : VisualState.Default);
-        }
+        public static void HandleReleased(Gesture.OnRelease evt, UIControlVisuals control) => control.UpdateVisualState(evt.Hovering ? VisualState.Hovered : VisualState.Default);
 
         /// <summary>
         /// A utility method to restore the visual state of <see cref="UIControlVisuals"/> object when its active gesture is canceled.
@@ -235,9 +233,28 @@ namespace NovaSamples.UIControls
         /// </summary>
         /// <param name="evt">The cancel event.</param>
         /// <param name="control">The <see cref="ItemVisuals"/> receiving the cancel gesture event.</param>
-        public static void HandlePressCanceled(Gesture.OnCancel evt, UIControlVisuals control)
+        public static void HandlePressCanceled(Gesture.OnCancel evt, UIControlVisuals control) => control.UpdateVisualState(VisualState.Default);
+    }
+
+    internal struct ControlColorAnimation : IAnimation
+    {
+        public UIBlock Target;
+        public Color TargetColor;
+        private Color startColor;
+
+        public void Update(float percentDone)
         {
-            control.UpdateVisualState(VisualState.Default);
+            if (Target == null)
+            {
+                return;
+            }
+
+            if (percentDone == 0)
+            {
+                startColor = Target.Color;
+            }
+
+            Target.Color = Color.Lerp(startColor, TargetColor, percentDone);
         }
     }
 }

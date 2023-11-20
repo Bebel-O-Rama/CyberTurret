@@ -25,17 +25,24 @@ namespace Nova.Compat
 #endif
         }
 
-        public unsafe static void CopyUV0(Vector2* dest, ref TMP_MeshInfo textNodeMeshUpdate)
+        public unsafe static void CopyUVs(Vector2* uv0s, Vector2* uv2s, ref TMP_MeshInfo textNodeMeshUpdate)
         {
 #if TMP_UV4
             for (int i = 0; i < textNodeMeshUpdate.vertices.Length; ++i)
             {
-                dest[i] = (Vector2)textNodeMeshUpdate.uvs0[i];
+                Vector4 src = textNodeMeshUpdate.uvs0[i];
+                uv0s[i] = (Vector2)src;
+                uv2s[i] = new Vector2(src.z, src.w);
             }
 #else
             fixed (Vector2* src = textNodeMeshUpdate.uvs0)
             {
-                UnsafeUtility.MemCpy(dest, src, sizeof(Vector2) * textNodeMeshUpdate.vertices.Length);
+                UnsafeUtility.MemCpy(uv0s, src, sizeof(Vector2) * textNodeMeshUpdate.vertices.Length);
+            }
+
+            fixed (Vector2* src = textNodeMeshUpdate.uvs2)
+            {
+                UnsafeUtility.MemCpy(uv2s, src, sizeof(Vector2) * textNodeMeshUpdate.vertices.Length);
             }
 #endif
         }

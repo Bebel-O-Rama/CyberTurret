@@ -339,13 +339,32 @@ namespace Nova
 
         private protected override IUIBlockBase PageInItem(bool firstSibling)
         {
+            if (!firstSibling && (highestPagedInIndex + 1) % SecondaryAxisItemCount != 0)
+            {
+                // Don't add new virtual block if it's not yet needed
+                IUIBlockBase gridItem = PageInNextItem(rebuildLayout: false);
+
+                if (gridItem != null && TryGetPrimaryAxisItemFromSourceIndex(highestPagedInIndex, out IUIBlock virtualParent))
+                {
+                    // Ensure new layout changes driven by recently added child
+                    virtualParent.CalculateLayout();
+                }
+
+                // No new primary axis item was added
+                return null;
+            }
+
             VirtualUIBlock vBlock = GetVirtualBlock(firstSibling);
+
+            int addedCount = 0;
 
             if (firstSibling)
             {
                 for (int i = 0; i < crossAxisItemCount; ++i)
                 {
-                    PageInPreviousItem(rebuildLayout: false);
+                    IUIBlockBase added = PageInPreviousItem(rebuildLayout: false);
+
+                    addedCount += (added as MonoBehaviour) != null ? 1 : 0;
 
                     if (lowestPagedInIndex == 0)
                     {
@@ -357,13 +376,22 @@ namespace Nova
             {
                 for (int i = 0; i < crossAxisItemCount; ++i)
                 {
-                    PageInNextItem(rebuildLayout: false);
+                    IUIBlockBase added = PageInNextItem(rebuildLayout: false);
+
+                    addedCount += (added as MonoBehaviour) != null ? 1 : 0;
 
                     if (highestPagedInIndex == DataWrapper.Count - 1)
                     {
                         break;
                     }
                 }
+            }
+
+            if (addedCount == 0)
+            {
+                processedBlocks.Enqueue(vBlock);
+
+                return null;
             }
 
             // The calculated layout properties will be out of sync, so we need to recalculate

@@ -53,7 +53,12 @@ namespace Nova.Editor
                 MarkDirty(false);
             }
 
-            NovaSettingsEditors.DrawEditor();
+            EditorGUI.BeginChangeCheck();
+            NovaSettingsEditors.DrawEditor(serializedObject);
+            if (EditorGUI.EndChangeCheck())
+            {
+                MarkDirty(false);
+            }
         }
 
         private void MarkDirty(bool fireEvents)

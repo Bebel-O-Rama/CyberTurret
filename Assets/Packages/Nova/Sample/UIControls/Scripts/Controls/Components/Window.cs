@@ -1,4 +1,5 @@
 using Nova;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace NovaSamples.UIControls
@@ -31,6 +32,11 @@ namespace NovaSamples.UIControls
             }
         }
 
+        /// <summary>
+        /// Cache the bounds of the window when the resize gesture begins
+        /// </summary>
+        private Dictionary<uint, Bounds> cachedBounds = new Dictionary<uint, Bounds>();
+
         private void OnEnable()
         {
             // Subscribe to gestures
@@ -38,6 +44,11 @@ namespace NovaSamples.UIControls
             UIBlock.AddGestureHandler<Gesture.OnDrag, WindowResizeRegion>(HandleResizeRegionDragged);
             UIBlock.AddGestureHandler<Gesture.OnHover, WindowResizeRegion>(HandleResizeRegionHovered);
             UIBlock.AddGestureHandler<Gesture.OnUnhover, WindowResizeRegion>(HandleResizeRegionUnhovered);
+            UIBlock.AddGestureHandler<Gesture.OnRelease, WindowResizeRegion>(HandleResizeRegionReleased);
+            UIBlock.AddGestureHandler<Gesture.OnCancel, WindowResizeRegion>(HandleResizeRegionGestureCanceled);
+
+            // Ensure known starting state
+            cachedBounds.Clear();
         }
 
         private void OnDisable()
@@ -47,6 +58,8 @@ namespace NovaSamples.UIControls
             UIBlock.RemoveGestureHandler<Gesture.OnDrag, WindowResizeRegion>(HandleResizeRegionDragged);
             UIBlock.RemoveGestureHandler<Gesture.OnHover, WindowResizeRegion>(HandleResizeRegionHovered);
             UIBlock.RemoveGestureHandler<Gesture.OnUnhover, WindowResizeRegion>(HandleResizeRegionUnhovered);
+            UIBlock.RemoveGestureHandler<Gesture.OnRelease, WindowResizeRegion>(HandleResizeRegionReleased);
+            UIBlock.RemoveGestureHandler<Gesture.OnCancel, WindowResizeRegion>(HandleResizeRegionGestureCanceled);
 
             // Restore the default cursor
             SetCursor(null);
@@ -80,25 +93,39 @@ namespace NovaSamples.UIControls
             Vector3 regionLocalPosition = UIBlock.transform.InverseTransformPoint(region.View.transform.position);
             Vector3 regionVector = Sign(regionLocalPosition);
 
-            // Adjust the window size
-            Vector3 sizeDelta = Vector3.Scale(evt.DragDeltaLocalSpace, regionVector);
-            Vector3 currentSize = UIBlock.CalculatedSize.Value;
-            UIBlock.Size = currentSize + sizeDelta;
+            // Get the total translation along the region's draggable axes
+            Vector3 dragAxes = new Vector3(evt.DraggableAxes.X ? 1 : 0, 
+                                           evt.DraggableAxes.Y ? 1 : 0, 
+                                           evt.DraggableAxes.Z ? 1 : 0);
+
+            Vector3 dragTranslation = Vector3.Scale(evt.RawTranslationLocalSpace, dragAxes);
+            Vector3 sizeDelta = Vector3.Scale(dragTranslation, regionVector);
+
+            if (!cachedBounds.TryGetValue(evt.Interaction.ControlID, out Bounds startingBounds))
+            {
+                // Cache the initial bounds once the gesture starts,
+                // so we can track total size and position change
+                startingBounds = new Bounds(UIBlock.transform.localPosition, UIBlock.CalculatedSize.Value);
+                cachedBounds.Add(evt.Interaction.ControlID, startingBounds);
+            }
+
+            // Adjust the size of the window
+            UIBlock.Size = startingBounds.size + sizeDelta;
 
             // Adjust the window's position such that the opposite side of the drag region remains in the same position
-            Vector3 rawPositionDelta = evt.DragDeltaLocalSpace * 0.5f;
-            Vector3 positionDelta = ClampPositionDelta(rawPositionDelta, sizeDelta, currentSize, UIBlock.SizeMinMax);
+            Vector3 rawPositionDelta = dragTranslation * 0.5f;
+            Vector3 positionDelta = ClampPositionDelta(rawPositionDelta, sizeDelta, startingBounds.size, UIBlock.SizeMinMax);
 
             Transform parent = UIBlock.transform.parent;
 
             if (parent != null)
             {
                 // Transform drag delta into parent space
-                Matrix4x4 localToParent = Matrix4x4.TRS(UIBlock.transform.localPosition, UIBlock.transform.localRotation, UIBlock.transform.localScale);
+                Matrix4x4 localToParent = Matrix4x4.TRS(startingBounds.center, UIBlock.transform.localRotation, UIBlock.transform.localScale);
                 positionDelta = localToParent.MultiplyVector(positionDelta);
             }
 
-            UIBlock.TrySetLocalPosition(UIBlock.transform.localPosition + positionDelta);
+            UIBlock.TrySetLocalPosition(startingBounds.center + positionDelta);
         }
 
         /// <summary>
@@ -116,6 +143,16 @@ namespace NovaSamples.UIControls
         {
             SetCursor(null);
         }
+
+        /// <summary>
+        /// Clear the cached size for the released pointer
+        /// </summary>
+        private void HandleResizeRegionReleased(Gesture.OnRelease evt, WindowResizeRegion region) => cachedBounds.Remove(evt.Interaction.ControlID);
+
+        /// <summary>
+        /// Clear the cached size for the canceled pointer
+        /// </summary>
+        private void HandleResizeRegionGestureCanceled(Gesture.OnCancel evt, WindowResizeRegion region) => cachedBounds.Remove(evt.Interaction.ControlID);
 
         private static Vector3 Sign(Vector3 v) => new Vector3(Sign(v.x), Sign(v.y), Sign(v.z));
 

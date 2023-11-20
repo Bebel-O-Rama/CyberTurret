@@ -40,6 +40,7 @@ namespace Nova.Internal.Rendering
             public NovaHashMap<DataStoreID, NovaList<CoplanarSetID, CoplanarSet>> CoplanarSets;
             public NovaHashMap<DataStoreID, SortGroupHierarchyInfo> SortGroupHierarchyInfo;
             public NovaHashMap<DataStoreID, int> ScreenSpaceCameraTargets;
+            public NovaHashMap<DataStoreID, NovaList<int>> ScreenSpaceAdditionalCameras;
 
             private NovaHashMap<DataStoreID, NovaList<DrawCallID, ProcessedDrawCall>> ProcessedDrawCalls;
             private NovaHashMap<DataStoreID, NovaList<CoplanarSetID, CoplanarSetLocation>> CoplanarSetInfo;
@@ -107,13 +108,28 @@ namespace Nova.Internal.Rendering
                     return true;
                 }
 
-                if (!ScreenSpaceCameraTargets.TryGetValue(hierarhcyInfo.HierarchyRoot, out int targetCameraID))
+
+                if (ScreenSpaceCameraTargets.TryGetValue(hierarhcyInfo.HierarchyRoot, out int targetCameraID))
                 {
-                    // Doesn't have a screen space target camera
+                    // It's a screen space
+                    if (targetCameraID == Camera.CameraInstanceID)
+                    {
+                        // This is the target camera
+                        return true;
+                    }
+
+                    if (!ScreenSpaceAdditionalCameras.TryGetValue(hierarhcyInfo.HierarchyRoot, out NovaList<int> additionalCameras))
+                    {
+                        return false;
+                    }
+
+                    return additionalCameras.TryGetIndexOf(Camera.CameraInstanceID, out _);
+                }
+                else
+                {
+                    // Not a screen space
                     return true;
                 }
-
-                return targetCameraID == Camera.CameraInstanceID;
             }
 
             /// <summary>

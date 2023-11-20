@@ -124,7 +124,7 @@ namespace Nova
             if (scrollDirection == 0)
             {
                 float viewportSize = root.CalculatedSize.Value[scrollAxis];
-                if (contentSize < viewportSize)
+                if (contentSize <= viewportSize)
                 {
                     scrollDirection = position == 0 ? -1 : (int)math.sign(position);
                 }

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Supernova Technologies LLC
 //#define USE_FALLBACK
+using Nova.Compat;
 using System.Runtime.CompilerServices;
 using Unity.Burst;
 using UnityEngine;
@@ -27,11 +28,21 @@ namespace Nova.Internal.Rendering
             get => Settings.Data.UseFallbackRendering;
         }
 
+        public static bool NewTMP
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => Settings.Data.NewTMP;
+        }
+
         public struct SettingsData
         {
             public ColorSpace ColorSpace;
             public bool UsingScriptableRenderPipeline;
             public bool UseFallbackRendering;
+            /// <summary>
+            /// Hate that we have this here, but we need a burst/job safe place to have this value
+            /// </summary>
+            public bool NewTMP;
         }
 
         public static readonly SharedStatic<SettingsData> Settings = SharedStatic<SettingsData>.GetOrCreate<SystemSettings, SettingsContext>();
@@ -42,6 +53,7 @@ namespace Nova.Internal.Rendering
             settingsData.ColorSpace = QualitySettings.activeColorSpace;
             settingsData.UsingScriptableRenderPipeline = GraphicsSettings.renderPipelineAsset != null;
             settingsData.UseFallbackRendering = SystemInfo.maxComputeBufferInputsVertex < 4;
+            settingsData.NewTMP = UnityVersionUtils.NewTMP;
         }
 
         private class SettingsContext { }

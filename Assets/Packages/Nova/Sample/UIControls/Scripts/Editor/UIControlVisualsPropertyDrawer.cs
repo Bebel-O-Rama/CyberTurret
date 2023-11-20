@@ -22,6 +22,7 @@ namespace NovaSamples.UIControls.Editor
         private const string TransitionTargetName = "transitionTarget";
 
         private const string TransitionTypeName = nameof(UIControlVisuals.TransitionType);
+        private const string TransitionDurationName = nameof(UIControlVisuals.TransitionDuration);
 
         private const string DefaultColorName = nameof(UIControlVisuals.DefaultColor);
         private const string HoveredColorName = nameof(UIControlVisuals.HoveredColor);
@@ -30,14 +31,16 @@ namespace NovaSamples.UIControls.Editor
         private const string SpritesName = nameof(UIControlVisuals.Sprites);
         private const string AnimationsName = nameof(UIControlVisuals.Animations);
 
+        // The colors + transition duration
         private const int NumberOfColorStates = 3;
 
-        private static readonly string[] ColorChangeFields = new string[] { TransitionTargetName, DefaultColorName, HoveredColorName, PressedColorName };
+        private static readonly string[] ColorChangeFields = new string[] { TransitionTargetName, DefaultColorName, HoveredColorName, PressedColorName, TransitionDurationName };
         private static readonly string[] SpriteSwapFields = new string[] { TransitionTargetName, SpritesName };
         private static readonly string[] AnimationFields = new string[] { AnimationsName };
 
         private static readonly HashSet<string> BaseFields = new HashSet<string>()
         {
+            TransitionDurationName,
             TransitionTargetName,
             TransitionTypeName,
             DefaultColorName,
@@ -63,6 +66,7 @@ namespace NovaSamples.UIControls.Editor
             float lineHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
             float transitionTargetHeight = lineHeight;
+            float transitionDurationHeight = lineHeight;
             float expectedSpritesHeight = GetFieldHeight(property, SpritesName);
             float actualSpritesHeight = lineHeight * GetChildPropertyCount(property, SpritesName);
             float expectedAnimationsHeight = GetFieldHeight(property, AnimationsName);
@@ -76,7 +80,7 @@ namespace NovaSamples.UIControls.Editor
                 switch (transitionType)
                 {
                     case TransitionType.ColorChange:
-                        totalPropertyHeight += colorsHeight + transitionTargetHeight;
+                        totalPropertyHeight += colorsHeight + transitionTargetHeight + transitionDurationHeight;
                         break;
                     case TransitionType.SpriteSwap:
                         totalPropertyHeight += actualSpritesHeight + transitionTargetHeight;

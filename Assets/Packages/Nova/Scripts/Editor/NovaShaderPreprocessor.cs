@@ -11,6 +11,8 @@ namespace Nova.Editor.Builds
 {
     internal class NovaShaderPreprocessor : IPreprocessShaders
     {
+        private const string NovaShaderPrefix = "Hidden/Nova/Nova";
+
         public int callbackOrder => 0;
         private List<ShaderKeyword> shaderKeywordsToRemove = new List<ShaderKeyword>();
         private static List<string> unityKeywordsToRemove = new List<string>()
@@ -26,7 +28,7 @@ namespace Nova.Editor.Builds
 
         public void OnProcessShader(Shader shader, ShaderSnippetData snippet, IList<ShaderCompilerData> data)
         {
-            if (!shader.name.Contains(Constants.ProjectName))
+            if (!shader.name.Contains(NovaShaderPrefix))
             {
                 // Not a nova shader
                 return;
@@ -64,7 +66,10 @@ namespace Nova.Editor.Builds
         private bool IncludedInBuild(string shaderName)
         {
             if (!TryGetBuildFlag(shaderName, out Internal.LightingModel lightingModel) ||
-                !TryGetVisualType(shaderName, out VisualType visualType))
+                !TryGetVisualType(shaderName, out VisualType visualType) ||
+                // Need to do this check here to ensure that the settings initialization
+                // happens
+                !Internal.NovaSettings.Initialized)
             {
                 return false;
             }

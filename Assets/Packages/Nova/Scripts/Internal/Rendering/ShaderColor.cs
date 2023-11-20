@@ -27,9 +27,9 @@ namespace Nova.Internal.Rendering
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Set(ref Color32 col)
+        public void Set(ref Color32 col, bool linearize)
         {
-            if (SystemSettings.ColorSpace == ColorSpace.Linear)
+            if (linearize && SystemSettings.ColorSpace == ColorSpace.Linear)
             {
                 Color linearized = ((Color)col).linear;
                 Pack(ref linearized);

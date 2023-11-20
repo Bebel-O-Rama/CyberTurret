@@ -112,7 +112,9 @@ namespace Nova.Internal
 
                 ref PerVertTextShaderData vertDest = ref dest[i];
                 vertDest.Position = VertexPositions[vertIndex] + positionalOffset;
-                vertDest.Color.Set(ref Colors.ElementAt(vertIndex));
+                // We only linearize if not using a new version of TMP, because new versions of TMP
+                // already do that, so if we do it as well it will double apply.
+                vertDest.Color.Set(ref Colors.ElementAt(vertIndex), linearize: !SystemSettings.NewTMP);
                 vertDest.Texcoord0 = UVs0[vertIndex];
                 vertDest.Texcoord1 = UVs1[vertIndex];
             }
@@ -150,7 +152,6 @@ namespace Nova.Internal
             NovaList<Vector3> asVec3 = VertexPositions.Reinterpret<float3, Vector3>();
             asVec3.CopyFrom(meshInfo.vertices, VertCount);
             Colors.CopyFrom(meshInfo.colors32, VertCount);
-            UVs1.CopyFrom(meshInfo.uvs2, VertCount);
         }
 
         public void Dispose()

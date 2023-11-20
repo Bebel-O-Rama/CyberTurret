@@ -1593,6 +1593,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
         HoveredColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
         PressedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -1679,7 +1680,7 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: 544
+        Raw: 272
         Type: 0
       Y:
         Raw: 0
@@ -1784,7 +1785,7 @@ MonoBehaviour:
         Min: -Infinity
         Max: Infinity
     Alignment:
-      X: -1
+      X: 0
       Y: 0
       Z: 0
     AutoSize:
@@ -3278,7 +3279,7 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: 0
+        Raw: -272
         Type: 0
       Y:
         Raw: 0
@@ -3383,7 +3384,7 @@ MonoBehaviour:
         Min: -Infinity
         Max: Infinity
     Alignment:
-      X: -1
+      X: 0
       Y: 0
       Z: 0
     AutoSize:
@@ -6568,7 +6569,7 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: 0
+        Raw: 3840
         Type: 0
       Y:
         Raw: 0
@@ -7897,6 +7898,7 @@ MonoBehaviour:
   fillMode: 0
   planeDistance: 10
   haveConfiguredSortGroup: 1
+  additionalCameras: []
 --- !u!114 &881306269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7946,7 +7948,7 @@ MonoBehaviour:
         Raw: 1
         Type: 0
       Z:
-        Raw: -9
+        Raw: 0
         Type: 0
     Padding:
       Left:
@@ -10060,6 +10062,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.6, g: 0.8666667, b: 1, a: 1}
         HoveredColor: {r: 0.19999999, g: 0.7333336, b: 1, a: 1}
         PressedColor: {r: 0.12, g: 0.44000018, b: 0.6, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -13585,6 +13588,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.101960786, g: 0.101960786, b: 0.101960786, a: 1}
         HoveredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
         PressedColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -14690,6 +14694,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.6, g: 0.8666667, b: 1, a: 1}
         HoveredColor: {r: 0.19999999, g: 0.7333336, b: 1, a: 1}
         PressedColor: {r: 0.12, g: 0.44000018, b: 0.6, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -15125,6 +15130,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.101960786, g: 0.101960786, b: 0.101960786, a: 1}
         HoveredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
         PressedColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -18340,6 +18346,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
         HoveredColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
         PressedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -18426,7 +18433,7 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: 272
+        Raw: 0
         Type: 0
       Y:
         Raw: 0
@@ -18531,7 +18538,7 @@ MonoBehaviour:
         Min: -Infinity
         Max: Infinity
     Alignment:
-      X: -1
+      X: 0
       Y: 0
       Z: 0
     AutoSize:
@@ -22873,6 +22880,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}
         HoveredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
         PressedColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -23289,6 +23297,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.39607844, g: 0.39607844, b: 0.39607844, a: 1}
         HoveredColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
         PressedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -28853,6 +28862,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}
         HoveredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
         PressedColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -31145,6 +31155,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.12156863, g: 0.20784314, b: 0.2509804, a: 1}
         HoveredColor: {r: 0, g: 0.6703911, b: 1, a: 1}
         PressedColor: {r: 0, g: 0.3326666, b: 0.499, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -31867,6 +31878,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.39607844, g: 0.39607844, b: 0.39607844, a: 1}
         HoveredColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
         PressedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -32036,6 +32048,7 @@ MonoBehaviour:
         DefaultColor: {r: 0.12156863, g: 0.20784314, b: 0.2509804, a: 1}
         HoveredColor: {r: 0, g: 0.6703911, b: 1, a: 1}
         PressedColor: {r: 0, g: 0.33333334, b: 0.49803922, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}

@@ -4,6 +4,7 @@ using Nova.Internal.Core;
 using Nova.Internal.Rendering;
 using Nova.Internal.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -21,6 +22,12 @@ namespace Nova
     public class ScreenSpace : MonoBehaviour, IScreenSpace
     {
         #region Public
+        /// <summary>
+        /// Event that is fired after the <see cref="ScreenSpace"/> finishes updating its 
+        /// position, scale, etc. to match the camera.
+        /// </summary>
+        public event Action OnPostCameraSync;
+
         /// <summary>
         /// Configures how to resize a <see cref="Nova.UIBlock"/> to fill a camera's viewport.
         /// </summary>
@@ -93,6 +100,101 @@ namespace Nova
         }
 
         /// <summary>
+        /// The number of additional cameras to render to.
+        /// </summary>
+        /// <remarks>
+        /// NOTE: The content belonging to the <see cref="ScreenSpace"/> will not be repositioned/sized for
+        /// the additional cameras. It will be rendered positioned and sized based on the <see cref="TargetCamera"/>.
+        /// </remarks>
+        public int AdditionalCameraCount => additionalCameras.Count;
+
+        /// <summary>
+        /// Adds an additional camera to render to, appending to the end of the list.
+        /// </summary>
+        /// <remarks>
+        /// NOTE: The content belonging to the <see cref="ScreenSpace"/> will not be repositioned/sized for
+        /// the additional cameras. It will be rendered positioned and sized based on the <see cref="TargetCamera"/>.
+        /// </remarks>
+        /// <param name="cam">The camera to add.</param>
+        public void AddAdditionalCamera(Camera cam)
+        {
+            if (cam == null)
+            {
+                Debug.LogWarning("Tried to add a null additional camera");
+                return;
+            }
+
+            additionalCameras.Add(cam);
+
+            RegisterOrUpdate();
+        }
+
+        /// <summary>
+        /// Sets the additional camera at the specified index.
+        /// </summary>
+        /// <remarks>
+        /// NOTE: The content belonging to the <see cref="ScreenSpace"/> will not be repositioned/sized for
+        /// the additional cameras. It will be rendered positioned and sized based on the <see cref="TargetCamera"/>.
+        /// </remarks>
+        /// <param name="index">The target index to replace.</param>
+        /// <param name="cam">The camera to set.</param>
+        /// <seealso cref="AddAdditionalCamera"/>
+        public void SetAdditionalCamera(int index, Camera cam)
+        {
+            if (cam == null)
+            {
+                Debug.LogWarning("Tried to set a null additional camera");
+                return;
+            }
+
+            if (index < 0 || index >= additionalCameras.Count)
+            {
+                Debug.LogError($"Tried to set an additional camera with index {index} when {nameof(AdditionalCameraCount)} was {AdditionalCameraCount}");
+                return;
+            }
+
+            additionalCameras[index] = cam;
+
+            RegisterOrUpdate();
+        }
+
+        /// <summary>
+        /// Gets the additional camera at the specified index.
+        /// </summary>
+        /// <param name="index">The index to retrieve.</param>
+        /// <returns>The camera at the target index, or null if the index was invalid.</returns>
+        /// <seealso cref="AddAdditionalCamera"/>
+        public Camera GetAdditionalCamera(int index)
+        {
+            if (index < 0 || index >= additionalCameras.Count)
+            {
+                Debug.LogError($"Tried to get an additional camera with index {index} when {nameof(AdditionalCameraCount)} was {AdditionalCameraCount}");
+                return null;
+            }
+
+            return additionalCameras[index];
+        }
+
+        /// <summary>
+        /// Removes the additional camera at the specified index. The remaining cameras
+        /// in the list will be renumbered to replace the removed item.
+        /// </summary>
+        /// <param name="index">The index to remove.</param>
+        /// <seealso cref="AddAdditionalCamera"/>
+        public void RemoveAdditionalCamera(int index)
+        {
+            if (index < 0 || index >= additionalCameras.Count)
+            {
+                Debug.LogError($"Tried to remove an additional camera with index {index} when {nameof(AdditionalCameraCount)} was {AdditionalCameraCount}");
+                return;
+            }
+
+            additionalCameras.RemoveAt(index);
+
+            RegisterOrUpdate();
+        }
+
+        /// <summary>
         /// The <see cref="FillMode">FillMode</see> used for resizing <see cref="UIBlock">UIBlock</see> to fill
         /// <see cref="TargetCamera">TargetCamera</see>.
         /// </summary>
@@ -131,8 +233,12 @@ namespace Nova
         [SerializeField]
         [HideInInspector]
         private bool haveConfiguredSortGroup = false;
+        [SerializeField]
+        private List<Camera> additionalCameras = new List<Camera>();
 
         int IScreenSpace.CameraID => targetCamera.GetInstanceID();
+
+        List<Camera> IScreenSpace.AdditionalCameras => additionalCameras;
 
         void IScreenSpace.Update() => UpdatePositionAndScale();
 
@@ -206,6 +312,14 @@ namespace Nova
 
         private void UpdatePositionAndScale(bool updatePositionUsingLayouts = false)
         {
+            if (PrefabStageUtils.IsInPrefabStage && 
+                PrefabStageUtils.TryGetCurrentStageRoot(out GameObject prefabRoot) &&
+                transform.IsChildOf(prefabRoot.transform))
+            {
+                // We are in prefab mode
+                return;
+            }
+
             if (UIBlock == null || targetCamera == null)
             {
                 return;
@@ -235,50 +349,57 @@ namespace Nova
             // Match camera rotation so the two are axis-aligned
             uiBlock.transform.rotation = targetCamera.transform.rotation;
 
-            if (fillMode == FillMode.Manual)
+            if (fillMode != FillMode.Manual)
             {
-                return;
+                Vector2 cameraDimensions = new Vector2(targetCamera.pixelWidth, targetCamera.pixelHeight);
+
+                // Adjust the size
+                ref Length3 uiBlockSize = ref uiBlock.Size;
+                switch (fillMode)
+                {
+                    case FillMode.MatchCameraResolution:
+                    {
+                        uiBlockSize.XY.Value = cameraDimensions;
+                        break;
+                    }
+                    case FillMode.FixedHeight:
+                    {
+                        uiBlockSize.Y.Value = ReferenceResolution.y;
+
+                        float aspectRatio = cameraDimensions.x / cameraDimensions.y;
+                        uiBlockSize.X.Value = aspectRatio * uiBlockSize.Y.Value;
+                        break;
+                    }
+                    case FillMode.FixedWidth:
+                    {
+                        uiBlockSize.X.Value = ReferenceResolution.x;
+
+                        float aspectRatio = cameraDimensions.y / cameraDimensions.x;
+                        uiBlockSize.Y.Value = aspectRatio * uiBlockSize.X.Value;
+                        break;
+                    }
+                }
+
+                if (targetCamera.orthographic)
+                {
+                    float scale = 2f * targetCamera.orthographicSize / uiBlockSize.Y.Value;
+                    uiBlock.transform.localScale = new Vector3(scale, scale, scale);
+                }
+                else
+                {
+                    // Adjust scale to match screen size
+                    float scale = 2f * planeDistance * Mathf.Tan(.5f * targetCamera.fieldOfView * Mathf.Deg2Rad) / uiBlockSize.Y.Value;
+                    uiBlock.transform.localScale = new Vector3(scale, scale, scale);
+                }
             }
 
-            Vector2 cameraDimensions = new Vector2(targetCamera.pixelWidth, targetCamera.pixelHeight);
-
-            // Adjust the size
-            ref Length3 uiBlockSize = ref uiBlock.Size;
-            switch (fillMode)
+            try
             {
-                case FillMode.MatchCameraResolution:
-                {
-                    uiBlockSize.XY.Value = cameraDimensions;
-                    break;
-                }
-                case FillMode.FixedHeight:
-                {
-                    uiBlockSize.Y.Value = ReferenceResolution.y;
-
-                    float aspectRatio = cameraDimensions.x / cameraDimensions.y;
-                    uiBlockSize.X.Value = aspectRatio * uiBlockSize.Y.Value;
-                    break;
-                }
-                case FillMode.FixedWidth:
-                {
-                    uiBlockSize.X.Value = ReferenceResolution.x;
-
-                    float aspectRatio = cameraDimensions.y / cameraDimensions.x;
-                    uiBlockSize.Y.Value = aspectRatio * uiBlockSize.X.Value;
-                    break;
-                }
+                OnPostCameraSync?.Invoke();
             }
-
-            if (targetCamera.orthographic)
+            catch (Exception e)
             {
-                float scale = 2f * targetCamera.orthographicSize / uiBlockSize.Y.Value;
-                uiBlock.transform.localScale = new Vector3(scale, scale, scale);
-            }
-            else
-            {
-                // Adjust scale to match screen size
-                float scale = 2f * planeDistance * Mathf.Tan(.5f * targetCamera.fieldOfView * Mathf.Deg2Rad) / uiBlockSize.Y.Value;
-                uiBlock.transform.localScale = new Vector3(scale, scale, scale);
+                Debug.LogError($"{nameof(ScreenSpace)}.{nameof(OnPostCameraSync)} handler failed with: {e}");
             }
         }
 

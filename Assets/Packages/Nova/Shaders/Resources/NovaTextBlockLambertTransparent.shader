@@ -104,7 +104,9 @@ Shader "Hidden/Nova/NovaTextBlockLambertTransparent"
             Name "FORWARD"
             Tags { "LightMode" = "ForwardBase" "DisableBatching" = "True" }
             ZWrite [_ZWrite]
-            Blend [_SrcBlend] [_DstBlend]
+            // Separate alpha blend to avoid setting the render target
+            // alpha value to be < 1
+            Blend [_SrcBlend] [_DstBlend], One OneMinusSrcAlpha
             Cull [_CullMode]
             ZTest [_ZTest]
 

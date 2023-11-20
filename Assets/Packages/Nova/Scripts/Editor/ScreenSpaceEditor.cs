@@ -22,6 +22,7 @@ namespace Nova.Editor.GUIs
 
         public override void OnInspectorGUI()
         {
+            // Target Camera
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.ObjectField(serializedObject.FindProperty(Names.ScreenSpace.targetCamera), typeof(Camera), Labels.ScreenSpace.TargetCamera);
             var fillModeProp = serializedObject.FindProperty(Names.ScreenSpace.fillMode);
@@ -34,6 +35,9 @@ namespace Nova.Editor.GUIs
             }
 
             NovaGUI.FloatFieldClamped(Labels.ScreenSpace.PlaneDistance, serializedObject.FindProperty(Names.ScreenSpace.planeDistance), 0f, float.MaxValue);
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(Names.ScreenSpace.additionalCameras), Labels.ScreenSpace.AdditionalCameras);
+
             if (EditorGUI.EndChangeCheck())
             {
                 MarkDirty();

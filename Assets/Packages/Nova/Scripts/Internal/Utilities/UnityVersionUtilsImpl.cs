@@ -19,6 +19,13 @@ namespace Nova.Internal.Utilities
             }
         }
 
+        public override bool NewTMP =>
+#if TMP_UV4
+            true;
+#else
+            false;
+#endif
+
         public static void Init()
         {
             UnityVersionUtils.Instance = new UnityVersionUtilsImpl();

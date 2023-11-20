@@ -203,6 +203,18 @@ MonoBehaviour:
     ReverseOrder: 0
     alignment: -1
     Offset: 0
+    Cross:
+      Axis: 0
+      Spacing:
+        Raw: 0
+        Type: 0
+      SpacingMinMax:
+        Min: 0
+        Max: Infinity
+      AutoSpace: 0
+      ReverseOrder: 0
+      alignment: -1
+      ExpandToGrid: 0
   visibility:
     ZIndex: 0
     BlockType: 1
@@ -214,7 +226,7 @@ MonoBehaviour:
     LightingModel: 0
     ShadowCastingMode: 2
     ReceiveShadows: 1
-  PreviewSize: {x: 360, y: 72, z: 0}
+  PreviewSize: {x: 344, y: 72, z: 0}
   visuals:
     Color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     CornerRadius:
@@ -301,13 +313,14 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: ButtonVisuals, ns: NovaSamples.UIControls, asm: Nova.UIControls}
+      type: {class: ImageButtonVisuals, ns: NovaSamples.UIControls, asm: Nova.UIControls}
       data:
         TransitionType: 1
         transitionTarget: {fileID: 1682639074409663085}
         DefaultColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
         HoveredColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
         PressedColor: {r: 0.15, g: 0.15, b: 0.15, a: 1}
+        TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
           HoveredSprite: {fileID: 0}
@@ -318,6 +331,7 @@ MonoBehaviour:
           PressedAnimation: Pressed
         Background: {fileID: 1682639074409663085}
         Label: {fileID: 1682639075144214703}
+        Image: {fileID: 1682639074986863221}
 --- !u!114 &1682639074409663088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +395,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
+  GestureSpace: 0
 --- !u!1 &1682639074986863219
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +422,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682639074986863219}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -128, y: 0, z: 0}
+  m_LocalPosition: {x: 52, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1682639074409663084}
@@ -579,6 +594,18 @@ MonoBehaviour:
     ReverseOrder: 0
     alignment: -1
     Offset: 0
+    Cross:
+      Axis: 0
+      Spacing:
+        Raw: 0
+        Type: 0
+      SpacingMinMax:
+        Min: 0
+        Max: Infinity
+      AutoSpace: 0
+      ReverseOrder: 0
+      alignment: -1
+      ExpandToGrid: 0
   visibility:
     ZIndex: 0
     BlockType: 1
@@ -696,7 +723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -26.702774, y: 0}
+  m_AnchoredPosition: {x: 153.29723, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &1682639075144214705
@@ -906,6 +933,18 @@ MonoBehaviour:
     ReverseOrder: 0
     alignment: -1
     Offset: 0
+    Cross:
+      Axis: 0
+      Spacing:
+        Raw: 0
+        Type: 0
+      SpacingMinMax:
+        Min: 0
+        Max: Infinity
+      AutoSpace: 0
+      ReverseOrder: 0
+      alignment: -1
+      ExpandToGrid: 0
   visibility:
     ZIndex: 0
     BlockType: 2

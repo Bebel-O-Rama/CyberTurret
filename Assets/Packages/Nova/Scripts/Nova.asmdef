@@ -39,6 +39,11 @@
       "name": "com.unity.render-pipelines.high-definition",
       "expression": "1.0.0",
       "define": "HIGH_DEF_RENDER_PIPELINE"
+    },
+    {
+      "name": "Unity",
+      "expression": "2023.2.0b1",
+      "define": "TMP_UV4"
     }
   ],
   "noEngineReferences": false
