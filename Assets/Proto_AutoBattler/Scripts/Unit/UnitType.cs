@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class UnitTargetType : ScriptableObject
+public class UnitType : ScriptableObject
 {
-    public List<UnitTargetType> TypesToTarget;
+    public List<UnitType> opposingTypes;
 }
