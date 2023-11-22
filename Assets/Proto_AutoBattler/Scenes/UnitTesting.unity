@@ -561,6 +561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: {fileID: 11400000, guid: 5aaf732bdaf1a594388a55124604cf2c, type: 2}
   unitData: {fileID: 11400000, guid: 5a712cf9e33867e48a93dc29799a3712, type: 2}
+  currentTarget: {fileID: 0}
 --- !u!114 &512624604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -574,9 +575,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentBlackboard: {fileID: 0}
-  _serializedBlackboard: '{"_variables":{}}'
+  _serializedBlackboard: '{"_variables":{"unitType":{"_propertyPath":"UnitInstance.unitType","_name":"unitType","_id":"704aa501-ebf9-4571-a628-67db41677d94","$type":"NodeCanvas.Framework.Variable`1[[UnitType,
+    Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"currentTarget":{"_propertyPath":"UnitInstance.currentTarget","_name":"currentTarget","_id":"a41bedf6-0770-4d34-94dd-4d09c24862d7","$type":"NodeCanvas.Framework.Variable`1[[UnitInstance,
+    Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
   _objectReferences: []
-  _serializedVariables: []
+  _serializedVariables:
+  - _json: '{"_propertyPath":"UnitInstance.unitType","_name":"unitType","_id":"704aa501-ebf9-4571-a628-67db41677d94","$type":"NodeCanvas.Framework.Variable`1[[UnitType,
+      Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_propertyPath":"UnitInstance.currentTarget","_name":"currentTarget","_id":"a41bedf6-0770-4d34-94dd-4d09c24862d7","$type":"NodeCanvas.Framework.Variable`1[[UnitInstance,
+      Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
 --- !u!114 &512624605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2175,6 +2184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: {fileID: 11400000, guid: e0b3a8f2c87e50e459149785f5408b19, type: 2}
   unitData: {fileID: 0}
+  currentTarget: {fileID: 0}
 --- !u!50 &2043578615
 Rigidbody2D:
   serializedVersion: 4

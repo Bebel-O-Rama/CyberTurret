@@ -7,9 +7,9 @@ using UnityEngine.Serialization;
 
 public class UnitTestingManager : MonoBehaviour
 {
-    private Dictionary<UnitType, List<Unit>> spawnedUnits;
+    private Dictionary<UnitType, List<UnitInstance>> spawnedUnits;
 
-    [SerializeField] public List<Unit> tempUnitInRoom;
+    [SerializeField] public List<UnitInstance> tempUnitInRoom;
 
     public static UnitTestingManager Instance => _instance ??= new UnitTestingManager();
     private static UnitTestingManager _instance;
@@ -20,25 +20,25 @@ public class UnitTestingManager : MonoBehaviour
 
     private void Awake()
     {
-        spawnedUnits = new Dictionary<UnitType, List<Unit>>();
-        tempUnitInRoom = new List<Unit>();
+        spawnedUnits = new Dictionary<UnitType, List<UnitInstance>>();
+        tempUnitInRoom = new List<UnitInstance>();
         _instance = this;
     }
 
-    public void AddUnit(UnitType type, Unit unit)
+    public void AddUnit(UnitType type, UnitInstance unit)
     {
         if (spawnedUnits.ContainsKey(type))
         {
             spawnedUnits[type].Add(unit);
         }
         else
-            spawnedUnits[type] = new List<Unit> { unit };
+            spawnedUnits[type] = new List<UnitInstance> { unit };
         
         //TEMP STUFF
         tempUnitInRoom.Add(unit);
     }
 
-    public void RemoveUnit(UnitType type, Unit unit)
+    public void RemoveUnit(UnitType type, UnitInstance unit)
     {
         spawnedUnits[type].Remove(unit);
         if (!spawnedUnits[type].Any())
@@ -48,9 +48,9 @@ public class UnitTestingManager : MonoBehaviour
         tempUnitInRoom.Remove(unit);
     }
 
-    public List<Unit> GetOpposingUnits(UnitType type)
+    public List<UnitInstance> GetOpposingUnits(UnitType type)
     {
-        List<Unit> opposingUnits = new List<Unit>();
+        List<UnitInstance> opposingUnits = new List<UnitInstance>();
         foreach (var t in type.opposingTypes)
         {
             if (spawnedUnits.ContainsKey(t))
