@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca29dfb7a1820114ab2e68b84ccfd8e5, type: 3}
   m_Name: LongRangeTargeting
   m_EditorClassIdentifier: 
-  targetingModule: {fileID: 11400000, guid: 01a8caf1b39e71d42b26e3a1228598c3, type: 2}
+  targetingModule: {fileID: 11400000, guid: c2de9d9c37dde524a808a04beaacad0a, type: 2}
   targetingRangeAround: 12
-  isCheckingCollisionAround: 0
+  isCheckingCollision: 0

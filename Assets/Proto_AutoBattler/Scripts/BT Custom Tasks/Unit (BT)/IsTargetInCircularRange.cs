@@ -7,7 +7,7 @@ namespace CustomBT.Unit
 {
     [Category("Unit")]
     [Description("Checks if the current target is still targetable by the unit")]
-    public class IsTargetInRange : ActionTask
+    public class IsTargetInCircularRange : ActionTask
     {
         public BBParameter<bool> isCheckingCollision;
         public BBParameter<float> targetingRange;

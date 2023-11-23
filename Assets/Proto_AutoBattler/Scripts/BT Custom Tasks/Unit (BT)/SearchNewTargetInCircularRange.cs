@@ -10,7 +10,7 @@ namespace CustomBT.Unit
     [Category("Unit")]
     [Description(
         "Search for a new opposing target in a circular range. Can also disable targeting for units behind a structure collider")]
-    public class SearchNewTargetInRange : ActionTask
+    public class SearchNewTargetInCircularRange : ActionTask
     {
         public BBParameter<bool> isCheckingCollision;
         public BBParameter<float> targetingRange;

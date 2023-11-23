@@ -9,5 +9,5 @@ public class UnitTargetingModule : ScriptableObject
     public Graph targetingModule;
 
     [Min(0)] public float targetingRangeAround;
-    public bool isCheckingCollisionAround;
+    public bool isCheckingCollision;
 }
