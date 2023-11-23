@@ -8,7 +8,7 @@ using UnityEngine;
 public class BasicSinMovements : MonoBehaviour
 {
     [Min(0)] [SerializeField] private Vector3 mvtRange;
-    [Min(1)] [SerializeField] private float mvtSpeed;
+    [Min(0)] [SerializeField] private float mvtSpeed;
     
     private Vector3 centerPosition;
     private Rigidbody2D rb;
