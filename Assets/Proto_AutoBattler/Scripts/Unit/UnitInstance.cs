@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NodeCanvas.Framework;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -9,9 +10,61 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public UnitData unitData;
     [SerializeField] public UnitInstance currentTarget;
 
-    private void Start()
+    [SerializeField] public UnitTargetingModule targetingModule;
+    
+    [SerializeField] [Min(1)] public int baseHP;
+    [SerializeField] [Min(0)] public float baseSpeed;
+    [SerializeField] [Min(0)] public float targetingRange;
+    [SerializeField] [Min(0)] public float hitDamage;
+    [SerializeField] [Min(1)] public int scrapValue;
+    [SerializeField] [Min(0)] public float activationDelay;
+
+    [SerializeField] public Color sleepingColor;
+    [SerializeField] public Color activatingColor;
+    [SerializeField] public Color searchColor;
+    [SerializeField] public Color attackColor;
+    [SerializeField] public Color damagedColor;
+    [SerializeField] public Color dyingColor;
+
+    private void Awake()
     {
-        UnitTestingManager.Instance.AddUnit(unitType, this);
+        SetUnitData();   
     }
     
+    private void Start()
+    {
+        if (SetUnitData())
+        {
+            UnitTestingManager.Instance.AddUnit(unitType, this);
+        }
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+    
+    private bool SetUnitData()
+    {
+        if (unitData == null)
+        {
+            Debug.LogWarning("The unitData is missing for the GameObject " + transform.name);
+            return false;
+        }
+        baseHP = unitData.baseHP;
+        baseSpeed = unitData.baseSpeed;
+        targetingRange = unitData.targetingRange;
+        hitDamage = unitData.hitDamage;
+        scrapValue = unitData.scrapValue;
+        activationDelay = unitData.activationDelay;
+
+        sleepingColor = unitData.sleepingColor;
+        activatingColor = unitData.activatingColor;
+        searchColor = unitData.searchColor;
+        attackColor = unitData.attackColor;
+        damagedColor = unitData.damagedColor;
+        dyingColor = unitData.dyingColor;
+        
+        return true;
+    }
 }

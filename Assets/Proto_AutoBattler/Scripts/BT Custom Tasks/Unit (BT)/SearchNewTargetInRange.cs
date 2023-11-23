@@ -1,46 +1,47 @@
 using System.Collections.Generic;
+using System.Linq;
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
+using UnityEngine;
 
 
-namespace CustomBT.Unit {
+namespace CustomBT.Unit
+{
+    [Category("Unit")]
+    [Description(
+        "Search for a new opposing target in a circular range. Can also disable targeting for units behind a structure collider")]
+    public class SearchNewTargetInRange : ActionTask
+    {
+        public BBParameter<bool> isCheckingCollision;
+        public BBParameter<float> targetingRange;
+        public BBParameter<Vector3> position;
+        public BBParameter<UnitType> unitType;
+        public BBParameter<UnitInstance> currentTarget;
+        
+        protected override void OnExecute()
+        {
+            List<UnitInstance> spawnedOpponent = UnitTestingManager.Instance.GetOpposingUnits(unitType.value);
+            UnitInstance newTarget = null;
+            float newTargetDistance = targetingRange.value;
 
-	[Category("Unit")]
-	[Description("Search for a new opposing target in a circular range. Can also disable targeting for units behind a structure collider")]
-	public class SearchNewTargetInRange : ActionTask
-	{
-		public BBParameter<UnitType> unitType;
+            foreach (var opponent in spawnedOpponent)
+            {
+                float distance = Vector3.Distance(position.value, opponent.GetPosition());
+                if (distance < newTargetDistance)
+                {
+                    // TODO Add collision detection! 
+                    if (isCheckingCollision.value)
+                    {
+                        Debug.Log("Missing collision check for the action SearchNewTargetInRange");
+                    }
+                    newTarget = opponent;
+                    newTargetDistance = distance;
+                }
+            }
 
-		//Use for initialization. This is called only once in the lifetime of the task.
-		//Return null if init was successfull. Return an error string otherwise
-		protected override string OnInit() {
-			return null;
-		}
+            currentTarget.SetValue(newTarget);
 
-		//This is called once each time the task is enabled.
-		//Call EndAction() to mark the action as finished, either in success or failure.
-		//EndAction can be called from anywhere.
-		protected override void OnExecute()
-		{
-			List<UnitInstance> spawnedOpponent = UnitTestingManager.Instance.GetOpposingUnits(unitType.value);
-			
-			
-			EndAction(true);
-		}
-
-		//Called once per frame while the action is active.
-		protected override void OnUpdate() {
-			
-		}
-
-		//Called when the task is disabled.
-		protected override void OnStop() {
-			
-		}
-
-		//Called when the task is paused.
-		protected override void OnPause() {
-			
-		}
-	}
+            EndAction(currentTarget.value != null);
+        }
+    }
 }

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d719b106ffc1ade4ab7d05b5491271be, type: 3}
+  m_Name: Data_Infantry_Melee
+  m_EditorClassIdentifier: 
+  baseHP: 2
+  baseSpeed: 3
+  targetingRange: 10
+  hitDamage: 1
+  scrapValue: 2
+  activationDelay: 1
+  sleepingColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 0}
+  activatingColor: {r: 0.24172305, g: 0.5283019, b: 0.3873458, a: 0}
+  searchColor: {r: 0.613401, g: 0.27020293, b: 0.8301887, a: 0}
+  attackColor: {r: 0.7169812, g: 0.08454966, b: 0.08454966, a: 0}
+  damagedColor: {r: 0.5943396, g: 0.46113274, b: 0.3504361, a: 0}
+  dyingColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0}
