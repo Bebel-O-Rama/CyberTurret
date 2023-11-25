@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHP: 2
   baseSpeed: 3
-  targetingRange: 10
+  targetingRange: 30
   hitDamage: 1
   scrapValue: 2
   activationDelay: 1

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using NodeCanvas.Framework;
+using Pathfinding;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -8,9 +9,11 @@ public class UnitInstance : MonoBehaviour
 {
     [SerializeField] public UnitType unitType;
     [SerializeField] public UnitData unitData;
+    
+    [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER")]
     [SerializeField] public UnitInstance currentTarget;
 
-    [SerializeField] public UnitTargetingModule targetingModule;
+    [SerializeField] public Seeker seeker; // Can't bind it to a BB without getting it here
     
     [SerializeField] [Min(1)] public int baseHP;
     [SerializeField] [Min(0)] public float baseSpeed;
@@ -25,7 +28,7 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public Color attackColor;
     [SerializeField] public Color damagedColor;
     [SerializeField] public Color dyingColor;
-
+    
     private void Awake()
     {
         SetUnitData();   
@@ -64,6 +67,8 @@ public class UnitInstance : MonoBehaviour
         attackColor = unitData.attackColor;
         damagedColor = unitData.damagedColor;
         dyingColor = unitData.dyingColor;
+
+        seeker = GetComponent<Seeker>();
         
         return true;
     }
