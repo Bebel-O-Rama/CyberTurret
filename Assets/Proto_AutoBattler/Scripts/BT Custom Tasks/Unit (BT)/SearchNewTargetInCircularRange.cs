@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace CustomBT.Unit
 {
-    [Category("Unit")]
+    [Category("_CustomBT/Unit")]
     [Description(
         "Search for a new opposing target in a circular range. Can also disable targeting for units behind a structure collider")]
     public class SearchNewTargetInCircularRange : ActionTask

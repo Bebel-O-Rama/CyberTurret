@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace CustomBT.Unit
 {
-    [Category("Unit")]
+    [Category("_CustomBT/Unit")]
     [Description(
         "Look for the closest possible target using the range of the path")]
     public class SearchNewTargetInPathRange : ActionTask

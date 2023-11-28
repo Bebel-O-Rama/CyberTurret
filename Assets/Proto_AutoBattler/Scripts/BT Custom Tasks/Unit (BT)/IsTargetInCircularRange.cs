@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CustomBT.Unit
 {
-    [Category("Unit")]
+    [Category("_CustomBT/Unit")]
     [Description("Checks if the current target is still targetable by the unit")]
     public class IsTargetInCircularRange : ActionTask
     {
