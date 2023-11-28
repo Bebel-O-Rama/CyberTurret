@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NodeCanvas.Framework;
 using Pathfinding;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class UnitInstance : MonoBehaviour
@@ -10,12 +12,18 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public UnitType unitType;
     [SerializeField] public UnitData unitData;
     
-    [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER")]
+    public Stack<HitInstance> hitInstances;
+    
+    
+    
+    [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER (It's just for testing), will be either removed or private")] 
+    
     [SerializeField] public UnitInstance currentTarget;
 
-    [SerializeField] public Seeker seeker; // Can't bind it to a BB without getting it here
+    [SerializeField] public int currentHP;
     
-    [SerializeField] [Min(1)] public int baseHP;
+
+    [SerializeField] [Min(1)] public int maxHP;
     [SerializeField] [Min(0)] public float baseSpeed;
     [SerializeField] [Min(0)] public float targetingRange;
     [SerializeField] [Min(0)] public float hitDamage;
@@ -28,12 +36,12 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public Color attackColor;
     [SerializeField] public Color damagedColor;
     [SerializeField] public Color dyingColor;
-    
+
     private void Awake()
     {
-        SetUnitData();   
+        SetUnitData();
     }
-    
+
     private void Start()
     {
         if (SetUnitData())
@@ -46,6 +54,12 @@ public class UnitInstance : MonoBehaviour
     {
         return transform.position;
     }
+
+    public void AddHitInstance(HitInstance hitInstance)
+    {
+        hitInstances.Push(hitInstance);
+        Debug.Log("Currently have " + hitInstances.Count + " hitInstance");
+    }
     
     private bool SetUnitData()
     {
@@ -54,7 +68,8 @@ public class UnitInstance : MonoBehaviour
             Debug.LogWarning("The unitData is missing for the GameObject " + transform.name);
             return false;
         }
-        baseHP = unitData.baseHP;
+
+        maxHP = unitData.baseHP;
         baseSpeed = unitData.baseSpeed;
         targetingRange = unitData.targetingRange;
         hitDamage = unitData.hitDamage;
@@ -68,7 +83,7 @@ public class UnitInstance : MonoBehaviour
         damagedColor = unitData.damagedColor;
         dyingColor = unitData.dyingColor;
 
-        seeker = GetComponent<Seeker>();
+        hitInstances = new Stack<HitInstance>();
         
         return true;
     }

@@ -1478,7 +1478,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0.0000009536743, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3527,7 +3527,6 @@ MonoBehaviour:
   unitType: {fileID: 11400000, guid: 5aaf732bdaf1a594388a55124604cf2c, type: 2}
   unitData: {fileID: 11400000, guid: 5a712cf9e33867e48a93dc29799a3712, type: 2}
   currentTarget: {fileID: 0}
-  seeker: {fileID: 0}
   baseHP: 0
   baseSpeed: 0
   targetingRange: 0
@@ -4449,7 +4448,7 @@ Transform:
   m_GameObject: {fileID: 2043578612}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.228, y: 0.06, z: 0}
+  m_LocalPosition: {x: 3.64, y: 0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4471,7 +4470,6 @@ MonoBehaviour:
   unitType: {fileID: 11400000, guid: e0b3a8f2c87e50e459149785f5408b19, type: 2}
   unitData: {fileID: 11400000, guid: 518eafbb23b7f8445a06a8286b8bf3c9, type: 2}
   currentTarget: {fileID: 0}
-  seeker: {fileID: 0}
   baseHP: 0
   baseSpeed: 0
   targetingRange: 0
@@ -5427,10 +5425,12 @@ MonoBehaviour:
   _serializedBlackboard: '{"_variables":{"gun":{"_value":1,"_name":"gun","_id":"283897ac-d1d1-4a43-ad7e-225c6eb72bc1","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"aimingSpeed":{"_value":150.0,"_name":"aimingSpeed","_id":"241d63af-e238-477a-a7d9-4126e9f78c3c","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"angleDelta":{"_value":3.0,"_name":"angleDelta","_id":"423d6794-ee81-4bb0-bcc8-c884fbb13736","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"hitInstance":{"_value":2,"_name":"hitInstance","_id":"29a215ba-66e1-4f50-8928-5671142d4a62","$type":"NodeCanvas.Framework.Variable`1[[HitInstance,
+    Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
   _objectReferences:
   - {fileID: 0}
   - {fileID: 5078533298013415250}
+  - {fileID: 11400000, guid: 82e8d83deef2bd646ab8d281e2c8d9b5, type: 2}
   _serializedVariables:
   - _json: '{"_value":1,"_name":"gun","_id":"283897ac-d1d1-4a43-ad7e-225c6eb72bc1","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
@@ -5443,6 +5443,11 @@ MonoBehaviour:
   - _json: '{"_value":3.0,"_name":"angleDelta","_id":"423d6794-ee81-4bb0-bcc8-c884fbb13736","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
     _references: []
+  - _json: '{"_value":1,"_name":"hitInstance","_id":"29a215ba-66e1-4f50-8928-5671142d4a62","$type":"NodeCanvas.Framework.Variable`1[[HitInstance,
+      Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 11400000, guid: 82e8d83deef2bd646ab8d281e2c8d9b5, type: 2}
 --- !u!1 &5078533298013415250
 GameObject:
   m_ObjectHideFlags: 0
@@ -5452,7 +5457,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2747448216116320286}
-  - component: {fileID: 5078533298013415251}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -5460,21 +5464,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5078533298013415251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5078533298013415250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6865e214729ebd448151acccdcbaf7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 5
-  thickness: 3
-  circleColor: {r: 0, g: 0.6792453, b: 0.012765453, a: 1}
 --- !u!114 &5280329466195440788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5490,7 +5479,6 @@ MonoBehaviour:
   unitType: {fileID: 11400000, guid: 5aaf732bdaf1a594388a55124604cf2c, type: 2}
   unitData: {fileID: 11400000, guid: 5a712cf9e33867e48a93dc29799a3712, type: 2}
   currentTarget: {fileID: 0}
-  seeker: {fileID: 0}
   baseHP: 0
   baseSpeed: 0
   targetingRange: 0
@@ -5517,6 +5505,7 @@ GameObject:
   - component: {fileID: 5067857337603980288}
   - component: {fileID: 6329407488618659236}
   - component: {fileID: 7503648539529020904}
+  - component: {fileID: 7503648539529020905}
   m_Layer: 8
   m_Name: Turret_InstantRange
   m_TagString: Untagged
@@ -5651,6 +5640,18 @@ PolygonCollider2D:
       - {x: -0.505, y: -0.292}
       - {x: 0.505, y: -0.292}
   m_UseDelaunayMesh: 0
+--- !u!114 &7503648539529020905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250759259350809387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2074100e0f8b874ebe51466dc669378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

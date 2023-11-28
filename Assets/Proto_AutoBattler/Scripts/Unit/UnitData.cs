@@ -21,4 +21,11 @@ public class UnitData : ScriptableObject
     public Color attackColor;
     public Color damagedColor;
     public Color dyingColor;
+
+
+
+    public void Test()
+    {
+        
+    }
 }
