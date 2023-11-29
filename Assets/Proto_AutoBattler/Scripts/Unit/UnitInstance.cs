@@ -12,9 +12,7 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public UnitType unitType;
     [SerializeField] public UnitData unitData;
     
-    public Stack<HitInstance> hitInstances;
-    
-    
+    public Queue<HitInstance> hitInstances;
     
     [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER (It's just for testing), will be either removed or private")] 
     
@@ -57,8 +55,13 @@ public class UnitInstance : MonoBehaviour
 
     public void AddHitInstance(HitInstance hitInstance)
     {
-        hitInstances.Push(hitInstance);
-        Debug.Log("Currently have " + hitInstances.Count + " hitInstance");
+        hitInstances.Enqueue(hitInstance);
+    }
+
+    public void KillUnit()
+    {
+        UnitTestingManager.Instance.RemoveUnit(unitType, this);
+        Destroy(gameObject);
     }
     
     private bool SetUnitData()
@@ -83,7 +86,7 @@ public class UnitInstance : MonoBehaviour
         damagedColor = unitData.damagedColor;
         dyingColor = unitData.dyingColor;
 
-        hitInstances = new Stack<HitInstance>();
+        hitInstances = new Queue<HitInstance>();
         
         return true;
     }

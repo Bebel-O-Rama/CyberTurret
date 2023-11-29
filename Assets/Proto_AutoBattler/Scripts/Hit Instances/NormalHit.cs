@@ -7,9 +7,8 @@ public class NormalHit : HitInstance
 {
     [Min(0)] [SerializeField] public int damageValue;
     
-    public override bool ProcessHit(UnitInstance targetUnitInstance)
+    public override void ProcessHit(UnitInstance targetUnitInstance)
     {
         targetUnitInstance.currentHP -= damageValue;
-        return targetUnitInstance.currentHP > 0;
     }
 }
