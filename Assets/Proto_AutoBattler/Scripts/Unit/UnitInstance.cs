@@ -24,11 +24,10 @@ public class UnitInstance : MonoBehaviour
 
     [SerializeField] public int currentHP;
     
-
     [SerializeField] [Min(1)] public int maxHP;
     [SerializeField] [Min(0)] public float baseSpeed;
     [SerializeField] [Min(0)] public float targetingRange;
-    [SerializeField] [Min(0)] public float hitDamage;
+    [SerializeField] [Min(0)] public int hitDamage;
     [SerializeField] [Min(1)] public int scrapValue;
     [SerializeField] [Min(0)] public float activationDelay;
 
@@ -57,6 +56,13 @@ public class UnitInstance : MonoBehaviour
         return transform.position;
     }
 
+    public HitInstance CreateHitInstance(HitType hitType)
+    {
+        // For know, let's create the hitData here
+        HitData hitdata = new HitData(this); // we should separate the combat data somewhere else to not send a UnitInstance
+        
+    }
+    
     public void AddHitInstance(HitInstance hitInstance)
     {
         hitInstances.Enqueue(hitInstance);

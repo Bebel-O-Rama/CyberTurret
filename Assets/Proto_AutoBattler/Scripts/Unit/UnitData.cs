@@ -10,7 +10,7 @@ public class UnitData : ScriptableObject
     [Min(1)] public int baseHP;
     [Min(0)] public float baseSpeed;
     [Min(0)] public float targetingRange;
-    [Min(0)] public float hitDamage;
+    [Min(0)] public int hitDamage;
     [Min(1)] public int scrapValue;
     [Min(0)] public float activationDelay;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "HitInstance/NormalHit")]
-public class NormalHit : HitInstance
+public class NormalHit : HitType
 {
     [Min(0)] [SerializeField] public int damageValue;
     
