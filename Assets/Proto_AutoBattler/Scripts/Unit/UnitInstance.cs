@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NodeCanvas.Framework;
+using NodeCanvas.Tasks.Actions;
 using Pathfinding;
+using Pathfinding.RVO;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(RVOController))]
 public class UnitInstance : MonoBehaviour
 {
     [SerializeField] public UnitType unitType;
     [SerializeField] public UnitData unitData;
     
     public Queue<HitInstance> hitInstances;
+    private RVOController rvoController;
     
     [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER (It's just for testing), will be either removed or private")] 
     
@@ -63,6 +67,11 @@ public class UnitInstance : MonoBehaviour
         UnitTestingManager.Instance.RemoveUnit(unitType, this);
         Destroy(gameObject);
     }
+
+    public Vector3 GetRVOPosition()
+    {
+        return rvoController.position;
+    }
     
     private bool SetUnitData()
     {
@@ -87,6 +96,8 @@ public class UnitInstance : MonoBehaviour
         dyingColor = unitData.dyingColor;
 
         hitInstances = new Queue<HitInstance>();
+        rvoController = GetComponent<RVOController>();
+        currentHP = maxHP;
         
         return true;
     }

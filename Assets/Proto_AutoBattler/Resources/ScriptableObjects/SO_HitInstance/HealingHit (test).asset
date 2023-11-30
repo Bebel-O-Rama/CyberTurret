@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81393fab7458a92479b70698bcfddd34, type: 3}
   m_Name: HealingHit (test)
   m_EditorClassIdentifier: 
-  healingStrength: 0
+  healingStrength: 2
+  canOverHeal: 0

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6eb852cc652d234aa076ed562f5adda, type: 3}
   m_Name: NormalHit (test)
   m_EditorClassIdentifier: 
-  hitStrength: 0
+  damageValue: 1
