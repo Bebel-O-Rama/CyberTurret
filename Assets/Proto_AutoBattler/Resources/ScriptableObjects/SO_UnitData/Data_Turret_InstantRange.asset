@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d719b106ffc1ade4ab7d05b5491271be, type: 3}
   m_Name: Data_Turret_InstantRange
   m_EditorClassIdentifier: 
-  baseHP: 5
+  baseHP: 2
   baseSpeed: 0
   targetingRange: 10
   hitDamage: 1

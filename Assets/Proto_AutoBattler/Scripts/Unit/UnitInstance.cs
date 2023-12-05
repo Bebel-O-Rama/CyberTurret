@@ -68,11 +68,6 @@ public class UnitInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public Vector3 GetRVOPosition()
-    {
-        return rvoController.position;
-    }
-    
     private bool SetUnitData()
     {
         if (unitData == null)
