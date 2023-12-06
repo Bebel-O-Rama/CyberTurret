@@ -33,7 +33,11 @@ namespace CustomBT.Decorators
         
         [RequiredField]
         [BlackboardOnly]
-        public BBParameter<UnitInstance> targetToTest;
+        public BBParameter<UnitInstance> targetToTest;        
+        
+        [RequiredField]
+        [BlackboardOnly]
+        public BBParameter<float> targetToTestRate;
         
         [RequiredField]
         [BlackboardOnly]
@@ -60,6 +64,7 @@ namespace CustomBT.Decorators
 
             foreach (var target in spawnedTargets)
             {
+                targetToTestRate.value = 0;
                 targetToTest.value = target;
                 status = decoratedConnection.Execute(agent, blackboard);
             }

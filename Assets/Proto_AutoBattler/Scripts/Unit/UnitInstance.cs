@@ -18,7 +18,7 @@ public class UnitInstance : MonoBehaviour
     public Queue<HitInstance> hitInstances;
     
     public List<UnitInstance> unitsTargetingThis;
-    
+    [SerializeField] public bool isUnitTargetable = true;
     
     private RVOController rvoController;
     
@@ -71,6 +71,11 @@ public class UnitInstance : MonoBehaviour
         hitInstances.Enqueue(hitInstance);
     }
 
+    public bool IsUnitTargetable()
+    {
+        return isUnitTargetable;
+    }
+    
     public void AddUnitTargetingThis(UnitInstance unit)
     {
         unitsTargetingThis.Add(unit);

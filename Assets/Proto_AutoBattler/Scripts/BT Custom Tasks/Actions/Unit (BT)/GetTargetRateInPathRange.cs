@@ -10,8 +10,8 @@ namespace CustomBT.Unit
 {
     [Category("_CustomBT/Unit")]
     [Description(
-        "Using a target iterator, update the currentTarget if the targetRate of the new one is better. Return Success if the target has been updated, otherwise return Failure.")]
-    public class CompareTargetInPathRange : ActionTask
+        "Get the targeting rate based on its path distance.")]
+    public class GetTargetRateInPathRange : ActionTask
     {
         [RequiredField]
         [BlackboardOnly]
@@ -21,17 +21,12 @@ namespace CustomBT.Unit
         [BlackboardOnly]
         public BBParameter<Vector3> position;
         
-        [BlackboardOnly]
-        public BBParameter<UnitInstance> currentTarget;
-        
         [RequiredField]
         [BlackboardOnly]
         public BBParameter<UnitInstance> targetToTest;
-        
-        [RequiredField]
-        [BlackboardOnly]
-        public BBParameter<float> bestTargetRate;
 
+        public bool failureIfRateZero = true;
+        
         protected override void OnExecute()
         {
             Path path = ABPath.Construct(position.value, targetToTest.value.GetPosition());
@@ -43,14 +38,9 @@ namespace CustomBT.Unit
             // For now, we do targetingRange - distance = newRate
             float newTargetRate = targetingRange.value - distance;
             
-            if (newTargetRate > bestTargetRate.value)
-            {
-                currentTarget.value = targetToTest.value;
-                bestTargetRate.value = newTargetRate;
-                EndAction(true);
-            }
-            
-            EndAction(false);
+            if (newTargetRate <= 0 && failureIfRateZero)
+                EndAction(false);
+            EndAction(true);
         }
     }
 }
