@@ -16,6 +16,10 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public UnitData unitData;
     
     public Queue<HitInstance> hitInstances;
+    
+    public List<UnitInstance> unitsTargetingThis;
+    
+    
     private RVOController rvoController;
     
     [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER (It's just for testing), will be either removed or private")] 
@@ -51,17 +55,27 @@ public class UnitInstance : MonoBehaviour
             UnitTestingManager.Instance.AddUnit(unitType, this);
         }
     }
-
+        
     public Vector3 GetPosition()
     {
         return transform.position;
     }
 
+    public UnitType GetUnitType()
+    {
+        return unitType;
+    }
+    
     public void AddHitInstance(HitInstance hitInstance)
     {
         hitInstances.Enqueue(hitInstance);
     }
 
+    public void AddUnitTargetingThis(UnitInstance unit)
+    {
+        unitsTargetingThis.Add(unit);
+    }
+    
     public void KillUnit()
     {
         UnitTestingManager.Instance.RemoveUnit(unitType, this);
@@ -91,6 +105,7 @@ public class UnitInstance : MonoBehaviour
         dyingColor = unitData.dyingColor;
 
         hitInstances = new Queue<HitInstance>();
+        unitsTargetingThis = new List<UnitInstance>();
         rvoController = GetComponent<RVOController>();
         currentHP = maxHP;
         

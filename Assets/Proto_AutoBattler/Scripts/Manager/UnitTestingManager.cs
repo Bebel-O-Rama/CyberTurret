@@ -48,14 +48,18 @@ public class UnitTestingManager : MonoBehaviour
         tempUnitInRoom.Remove(unit);
     }
 
-    public List<UnitInstance> GetOpposingUnits(UnitType type)
+    public List<UnitInstance> GetUnitTargetsFromType(UnitType type, bool isLookingForAllies = false)
     {
-        List<UnitInstance> opposingUnits = new List<UnitInstance>();
-        foreach (var t in type.opposingTypes)
+        if (isLookingForAllies)
+            return spawnedUnits[type];
+        
+        List<UnitInstance> unitTargets = new List<UnitInstance>();
+            foreach (var t in type.opposingTypes)
         {
             if (spawnedUnits.ContainsKey(t))
-                opposingUnits.AddRange(spawnedUnits[t]);
+                unitTargets.AddRange(spawnedUnits[t]);
         }
-        return opposingUnits;
+
+        return unitTargets;
     }
 }

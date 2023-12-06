@@ -12,7 +12,7 @@ namespace CustomBT.Decorators
     [Name("Iterate Hit Queue")]
     [Category("CustomBT")]
     [Description(
-        "Iterate through the HitInstances queue of a unit and process each hit. Keeps iterating until the queue is empty or the unit is dead. Return Success if the hit killed the unit, otherwise return failure.")]
+        "Iterate through the HitInstances queue of a unit and process each hit. Keeps iterating until the queue is empty or the unit is dead. Return Success if the hit killed the unit, otherwise return Failure.")]
     [ParadoxNotion.Design.Icon("List")]
     public class IterateHitQueue : BTDecorator
     {

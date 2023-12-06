@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d719b106ffc1ade4ab7d05b5491271be, type: 3}
   m_Name: Data_Infantry_Melee
   m_EditorClassIdentifier: 
-  baseHP: 20000
+  baseHP: 2
   baseSpeed: 3
   targetingRange: 30
   hitDamage: 1
