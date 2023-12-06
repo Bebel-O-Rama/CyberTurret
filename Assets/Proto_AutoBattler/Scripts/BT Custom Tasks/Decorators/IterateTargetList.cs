@@ -62,8 +62,6 @@ namespace CustomBT.Decorators
             {
                 targetToTest.value = target;
                 status = decoratedConnection.Execute(agent, blackboard);
-                
-                return Status.Running;
             }
 
             if (currentTarget.value != null)

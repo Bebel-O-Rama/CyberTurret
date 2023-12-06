@@ -20,7 +20,6 @@ namespace CustomBT.Unit
         [BlackboardOnly]
         public BBParameter<Vector3> position;
         
-        [RequiredField]
         [BlackboardOnly]
         public BBParameter<UnitInstance> currentTarget;
         
@@ -43,6 +42,7 @@ namespace CustomBT.Unit
             {
                 currentTarget.value = targetToTest.value;
                 bestTargetRate.value = newTargetRate;
+
                 EndAction(true);
             }
             

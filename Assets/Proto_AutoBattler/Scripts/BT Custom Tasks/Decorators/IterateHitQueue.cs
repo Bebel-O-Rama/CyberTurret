@@ -36,8 +36,6 @@ namespace CustomBT.Decorators
 
                 if (status == Status.Success)
                     return Status.Success;
-                
-                return Status.Running;
             }
 
             return Status.Failure;
@@ -52,7 +50,7 @@ namespace CustomBT.Decorators
             if (Application.isPlaying)
             {
                 GUILayout.Label("PROCESSING HITS");
-                GUILayout.Label("There are " + queue.value.Count + " other hit(s) to process");
+                // GUILayout.Label("There are " + queue.value.Count + " other hit(s) to process");
             }
         }
 #endif

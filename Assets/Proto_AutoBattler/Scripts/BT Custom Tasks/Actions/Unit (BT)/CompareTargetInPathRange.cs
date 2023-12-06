@@ -21,7 +21,6 @@ namespace CustomBT.Unit
         [BlackboardOnly]
         public BBParameter<Vector3> position;
         
-        [RequiredField]
         [BlackboardOnly]
         public BBParameter<UnitInstance> currentTarget;
         
