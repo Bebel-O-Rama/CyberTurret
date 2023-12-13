@@ -9,7 +9,6 @@ namespace NodeCanvas.Tasks.Conditions
     [Description("Check whether or not a variable is null")]
     public class CheckNull : ConditionTask
     {
-
         [BlackboardOnly]
         public BBParameter<System.Object> variable;
 

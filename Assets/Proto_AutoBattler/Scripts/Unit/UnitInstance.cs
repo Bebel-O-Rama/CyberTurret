@@ -17,10 +17,8 @@ public class UnitInstance : MonoBehaviour
     
     public Queue<HitInstance> hitInstances;
     
-    public List<UnitInstance> unitsTargetingThis;
+    public List<UnitInstance> unitTargeters;
     [SerializeField] public bool isUnitTargetable = true;
-    
-    private RVOController rvoController;
     
     [Header("DON'T TOUCH ANYTHING UNDER THIS HEADER (It's just for testing), will be either removed or private")] 
     
@@ -76,17 +74,33 @@ public class UnitInstance : MonoBehaviour
         return isUnitTargetable;
     }
 
-    public void AddUnitTargetingThis(UnitInstance unit)
+    public void AddUnitTargeter(UnitInstance unit)
     {
-        unitsTargetingThis.Add(unit);
+        unitTargeters.Add(unit);
     }
     
     public void KillUnit()
     {
         UnitTestingManager.Instance.RemoveUnit(unitType, this);
+        foreach (var targeter in unitTargeters)
+        {
+            targeter.ClearTarget();
+        }
+        if (currentTarget != null)
+            currentTarget.RemoveTargeter(this);
         Destroy(gameObject);
     }
 
+    private void ClearTarget()
+    {
+        currentTarget = null;
+    }
+
+    private void RemoveTargeter(UnitInstance targeter)
+    {
+        unitTargeters.Remove(targeter);
+    }
+    
     private bool SetUnitData()
     {
         if (unitData == null)
@@ -110,8 +124,7 @@ public class UnitInstance : MonoBehaviour
         dyingColor = unitData.dyingColor;
 
         hitInstances = new Queue<HitInstance>();
-        unitsTargetingThis = new List<UnitInstance>();
-        rvoController = GetComponent<RVOController>();
+        unitTargeters = new List<UnitInstance>();
         currentHP = maxHP;
         
         return true;

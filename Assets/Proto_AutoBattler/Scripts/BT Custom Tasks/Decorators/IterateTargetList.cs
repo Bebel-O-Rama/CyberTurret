@@ -19,17 +19,16 @@ namespace CustomBT.Decorators
         [RequiredField]
         [BlackboardOnly]
         public BBParameter<UnitInstance> thisUnit;
-        
-        // For now, I'll hard set them. We could show them once it becomes useful. Don't forget to add .value to the variables!
-        //
-        // public BBParameter<bool> isLookingForAllies = false;
-        // public BBParameter<bool> canTargetItself = false;
+
         public bool isLookingForAllies = false;
         public bool canTargetItself = false;
         
+        [BlackboardOnly]
+        public BBParameter<UnitInstance> bestTarget;
+        
         [RequiredField]
         [BlackboardOnly]
-        public BBParameter<UnitInstance> currentTarget;
+        public BBParameter<float> bestTargetRate;
         
         [RequiredField]
         [BlackboardOnly]
@@ -38,10 +37,6 @@ namespace CustomBT.Decorators
         [RequiredField]
         [BlackboardOnly]
         public BBParameter<float> targetToTestRate;
-        
-        [RequiredField]
-        [BlackboardOnly]
-        public BBParameter<float> bestTargetRate;
 
         protected override Status OnExecute(Component agent, IBlackboard blackboard)
         {
@@ -52,14 +47,8 @@ namespace CustomBT.Decorators
             List<UnitInstance> spawnedTargets = UnitTestingManager.Instance.GetUnitTargetsFromType(type, isLookingForAllies);
             if (!canTargetItself)
                 spawnedTargets.Remove(thisUnit.value);
-            
-            if (currentTarget.value != null)
-            {
-                Debug.LogWarning("A unit is trying to find a new unit to target when it's already targeting " +
-                                 currentTarget.value.name +
-                                 ". The previous target has been removed to find a new one.");
-                currentTarget.value = null;
-            }
+
+            bestTarget.value = null;
             bestTargetRate.value = 0;
 
             foreach (var target in spawnedTargets)
@@ -69,7 +58,7 @@ namespace CustomBT.Decorators
                 status = decoratedConnection.Execute(agent, blackboard);
             }
 
-            if (currentTarget.value != null)
+            if (bestTarget.value != null)
                 return Status.Success;
             return Status.Failure;
         }
