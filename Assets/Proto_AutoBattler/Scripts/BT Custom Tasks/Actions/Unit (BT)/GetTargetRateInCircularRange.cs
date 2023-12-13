@@ -9,8 +9,8 @@ namespace CustomBT.Unit
 {
     [Category("_CustomBT/Unit")]
     [Description(
-        "Using a target iterator, update the currentTarget if the targetRate of the new one is better. Return Success if the target has been updated, otherwise return Failure.")]
-    public class CompareTargetInCircularRange : ActionTask
+        "Get the targeting rate based on its circular distance. Returns Success, or Failure if the rate is <= 0 and failureIfRateZero is set to true.")]
+    public class GetTargetRateInCircularRange : ActionTask
     {
         [RequiredField]
         [BlackboardOnly]
@@ -19,17 +19,16 @@ namespace CustomBT.Unit
         [RequiredField]
         [BlackboardOnly]
         public BBParameter<Vector3> position;
-        
-        [BlackboardOnly]
-        public BBParameter<UnitInstance> currentTarget;
-        
+
         [RequiredField]
         [BlackboardOnly]
         public BBParameter<UnitInstance> targetToTest;
         
         [RequiredField]
         [BlackboardOnly]
-        public BBParameter<float> bestTargetRate;
+        public BBParameter<float> targetToTestRate;
+        
+        public bool failureIfRateZero = true;
         
         protected override void OnExecute()
         {
@@ -38,15 +37,10 @@ namespace CustomBT.Unit
             // For now, we do targetingRange - distance = newRate
             float newTargetRate = targetingRange.value - distance;
 
-            if (newTargetRate > bestTargetRate.value)
-            {
-                currentTarget.value = targetToTest.value;
-                bestTargetRate.value = newTargetRate;
-
-                EndAction(true);
-            }
-            
-            EndAction(false);
+            if (newTargetRate <= 0 && failureIfRateZero)
+                EndAction(false);
+            targetToTestRate.value += newTargetRate;
+            EndAction(true);
         }
     }
 }

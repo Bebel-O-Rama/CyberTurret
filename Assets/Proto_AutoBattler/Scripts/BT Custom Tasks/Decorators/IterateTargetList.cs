@@ -37,6 +37,10 @@ namespace CustomBT.Decorators
         
         [RequiredField]
         [BlackboardOnly]
+        public BBParameter<float> targetToTestRate;
+        
+        [RequiredField]
+        [BlackboardOnly]
         public BBParameter<float> bestTargetRate;
 
         protected override Status OnExecute(Component agent, IBlackboard blackboard)
@@ -60,6 +64,7 @@ namespace CustomBT.Decorators
 
             foreach (var target in spawnedTargets)
             {
+                targetToTestRate.value = 0;
                 targetToTest.value = target;
                 status = decoratedConnection.Execute(agent, blackboard);
             }
