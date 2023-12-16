@@ -25,7 +25,6 @@ public class UnitInstance : MonoBehaviour
     [SerializeField] public UnitInstance currentTarget;
 
     [SerializeField] public int currentHP;
-    
 
     [SerializeField] [Min(1)] public int maxHP;
     [SerializeField] [Min(0)] public float baseSpeed;

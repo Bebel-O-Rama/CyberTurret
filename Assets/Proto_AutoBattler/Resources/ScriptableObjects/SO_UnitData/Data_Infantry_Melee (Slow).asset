@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d719b106ffc1ade4ab7d05b5491271be, type: 3}
-  m_Name: Data_Turret_InstantRange
+  m_Name: Data_Infantry_Melee (Slow)
   m_EditorClassIdentifier: 
   baseHP: 2
-  baseSpeed: 0
-  targetingRange: 10
+  baseSpeed: 0.8
+  targetingRange: 30
   hitDamage: 1
-  scrapValue: 5
-  activationDelay: 4
+  scrapValue: 2
+  activationDelay: 1
   sleepingColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 0}
   activatingColor: {r: 0.24172305, g: 0.5283019, b: 0.3873458, a: 0}
   searchColor: {r: 0.613401, g: 0.27020293, b: 0.8301887, a: 0}

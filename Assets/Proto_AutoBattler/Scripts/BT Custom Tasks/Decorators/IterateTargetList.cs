@@ -56,6 +56,7 @@ namespace CustomBT.Decorators
                 targetToTestRate.value = 0;
                 targetToTest.value = target;
                 status = decoratedConnection.Execute(agent, blackboard);
+                decoratedConnection.Reset();
             }
 
             if (bestTarget.value != null)
