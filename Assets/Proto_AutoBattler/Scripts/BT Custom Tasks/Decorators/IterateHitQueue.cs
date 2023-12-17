@@ -36,6 +36,7 @@ namespace CustomBT.Decorators
 
                 if (status == Status.Success)
                     return Status.Success;
+                decoratedConnection.Reset();
             }
 
             return Status.Failure;

@@ -26,7 +26,6 @@ namespace CustomBT.Unit {
 
 		//Called whenever the condition gets enabled.
 		protected override void OnExecute() {
-			Debug.Log("Target rate for " + targetToTest.name + " is : " + targetToTest.value + " and the current best is : " + bestTargetRate.value);
 			if (targetToTestRate.value > bestTargetRate.value)
 			{
 				bestTarget.value = targetToTest.value;
