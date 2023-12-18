@@ -19,9 +19,9 @@ namespace CustomBT.Decorators
         [RequiredField]
         [BlackboardOnly]
         public BBParameter<UnitInstance> thisUnit;
-
-        public bool isLookingForAllies = false;
-        public bool canTargetItself = false;
+        
+        public BBParameter<bool> isLookingForAllies = false;
+        public BBParameter<bool> canTargetItself = false;
         
         [BlackboardOnly]
         public BBParameter<UnitInstance> bestTarget;
@@ -44,8 +44,8 @@ namespace CustomBT.Decorators
                 return Status.Resting;
             UnitType type = thisUnit.value.GetUnitType();
                 
-            List<UnitInstance> spawnedTargets = UnitTestingManager.Instance.GetUnitTargetsFromType(type, isLookingForAllies);
-            if (!canTargetItself)
+            List<UnitInstance> spawnedTargets = UnitTestingManager.Instance.GetUnitTargetsFromType(type, isLookingForAllies.value);
+            if (!canTargetItself.value)
                 spawnedTargets.Remove(thisUnit.value);
 
             bestTarget.value = null;

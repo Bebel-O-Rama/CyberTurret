@@ -14,7 +14,7 @@ namespace CustomBT.Unit {
 		[RequiredField]
 		[BlackboardOnly]
 		public BBParameter<UnitInstance> target;
-
+		
 		public bool clearPathWhenInterrupted = true;
 
 		private IAstarAI ai;
