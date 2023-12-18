@@ -23,14 +23,21 @@ namespace CustomBT.Conditions {
 		public BBParameter<bool> canBeBlocked = true;
 
 		public LayerMask mask;
-		
-		protected override bool OnCheck() {
+
+		protected override bool OnCheck()
+		{
+			if (currentTarget.value == null)
+				return false;
+
 			float distance = Vector3.Distance(position.value, currentTarget.value.GetPosition());
+			Debug.Log(distance);
 			if (distance > targetingRange.value)
 				return false;
+
 			if (canBeBlocked.value &&
 			    Physics2D.Linecast(position.value, currentTarget.value.GetPosition(), mask))
 				return false;
+
 			return true;
 		}
 	}
