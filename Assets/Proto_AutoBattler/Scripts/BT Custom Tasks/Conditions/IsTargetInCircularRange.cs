@@ -14,7 +14,6 @@ namespace CustomBT.Conditions {
 		public BBParameter<Vector3> position;
 		
 		[RequiredField]
-		[BlackboardOnly]
 		public BBParameter<UnitInstance> currentTarget;
 		
 		[RequiredField]
