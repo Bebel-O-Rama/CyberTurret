@@ -46,21 +46,36 @@ namespace CustomBT.Unit {
 			// 	if (ai.reachedDestination)
 			// 		EndAction(true);
 			// }
-			
-			ai.destination = target.value.GetPosition();
+			if (target.isNull)
+			{
+				ClearPath();
+				EndAction(false);
+			}
+			else
+			{
+				ai.destination = target.value.GetPosition();
+			}
 
 		}
 		
 		protected override void OnStop()
 		{
-			if (clearPathWhenInterrupted)
-			{
-				ai.isStopped = true;
-				ai.SetPath(null);
-				ai.destination = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
-			}
+			// if (clearPathWhenInterrupted)
+			// {
+			// 	// ai.isStopped = true;
+			// 	ai.SetPath(null);
+			// 	ai.destination = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
+			// }
+			//
+			// EndAction(true);
+		}
 
-			EndAction(true);
+		private void ClearPath(bool stopMoving = true)
+		{
+			if (stopMoving)
+				ai.isStopped = true;
+			ai.SetPath(null);
+			ai.destination = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
 		}
 	}
 }

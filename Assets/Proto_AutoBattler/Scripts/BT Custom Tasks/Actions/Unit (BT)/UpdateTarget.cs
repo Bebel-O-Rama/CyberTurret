@@ -19,11 +19,14 @@ namespace CustomBT.Unit {
 		public BBParameter<UnitInstance> thisUnit;
 
 		protected override void OnExecute() {
-			if (bestTarget.value == null)
+			if (bestTarget.isNull)
 				EndAction(false);
-			bestTarget.value.AddUnitTargeter(thisUnit.value);
-			currentTarget.value = bestTarget.value;
-			EndAction(true);
+			else
+			{
+				bestTarget.value.AddUnitTargeter(thisUnit.value);
+				currentTarget.value = bestTarget.value;
+				EndAction(true);
+			}
 		}
 	}
 }
