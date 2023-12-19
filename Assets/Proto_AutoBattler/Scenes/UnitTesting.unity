@@ -6594,7 +6594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &555165881
 Transform:
   m_ObjectHideFlags: 0
@@ -24483,7 +24483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1848985209
 Transform:
   m_ObjectHideFlags: 0
@@ -25320,10 +25320,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parentBlackboard: {fileID: 0}
   _serializedBlackboard: '{"_variables":{"rangeAttackReady":{"_value":5.0,"_name":"rangeAttackReady","_id":"77260078-47b8-4878-87ff-583771427b9b","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"telegraphAttackCooldown":{"_value":15.0,"_name":"telegraphAttackCooldown","_id":"4d0fd1b8-8c92-423f-a1ca-b26d208892c8","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"targetingRange":{"_propertyPath":"UnitInstance.targetingRange","_name":"targetingRange","_id":"d6bcb028-e424-47e9-a2f1-c1d560556b9e","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   _objectReferences: []
   _serializedVariables:
   - _json: '{"_value":5.0,"_name":"rangeAttackReady","_id":"77260078-47b8-4878-87ff-583771427b9b","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_value":15.0,"_name":"telegraphAttackCooldown","_id":"4d0fd1b8-8c92-423f-a1ca-b26d208892c8","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_propertyPath":"UnitInstance.targetingRange","_name":"targetingRange","_id":"d6bcb028-e424-47e9-a2f1-c1d560556b9e","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
     _references: []
 --- !u!114 &1889823110
