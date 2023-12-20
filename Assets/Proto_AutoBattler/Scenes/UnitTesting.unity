@@ -17049,7 +17049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   desiredSimulationFPS: 40
-  workerThreads: 0
+  workerThreads: -1
   doubleBuffering: 0
   symmetryBreakingBias: 0.1
   movementPlane: 1
@@ -17526,7 +17526,7 @@ MonoBehaviour:
   - 29
   - 30
   - 31
-  heuristic: 0
+  heuristic: 1
   heuristicScale: 1
   threadCount: -1
   maxFrameTime: 10

@@ -33,10 +33,21 @@ public class LineRenderedDebug : MonoBehaviour
         lr.SetPosition(1, endPos);
     }
 
-    public void StartCircle(LineType t, float span = 0.5f, bool fade = true)
+    public void StartCircle(Vector3 centerPos, float radius, LineType t, float span = 0.5f, bool fade = true)
     {
         SetLineParameters(t, span, fade);
 
+        // I don't want to have to pass that as a parameter. Let's see how it looks with a const number of steps
+        int steps = 20;
+        lr.loop = true;
+        lr.positionCount = steps;
+
+        for (int i = 0; i < steps; i++)
+        {
+            float currentRadian = ((float)i/steps) * 2 * Mathf.PI;
+            Vector3 currentPosition = new Vector3(Mathf.Cos(currentRadian), Mathf.Sin(currentRadian), 0f) * radius;
+            lr.SetPosition(i, currentPosition + centerPos);
+        }
     }
     
     public void StartCone(LineType t, float span = 0.5f, bool fade = true)
@@ -49,9 +60,12 @@ public class LineRenderedDebug : MonoBehaviour
     {
         timeSinceStart += Time.deltaTime;
         
-        var colorTemp = lr.material.color;
-        colorTemp.a = Mathf.Lerp(0f, 1f, alphaCurve.Evaluate(timeSinceStart/lifespan));
-        lr.material.color = colorTemp;
+        if (isFading)
+        {
+            var colorTemp = lr.material.color;
+            colorTemp.a = Mathf.Lerp(0f, 1f, alphaCurve.Evaluate(timeSinceStart / lifespan));
+            lr.material.color = colorTemp;
+        }
         
         if (timeSinceStart >= lifespan)       
         {
@@ -91,5 +105,7 @@ public class LineRenderedDebug : MonoBehaviour
             Debug.LogWarning("Something went wrong with one of the debug line, it's missing it's material.");
             Destroy(gameObject);
         }
+
+        lr.material = material;
     }
 }

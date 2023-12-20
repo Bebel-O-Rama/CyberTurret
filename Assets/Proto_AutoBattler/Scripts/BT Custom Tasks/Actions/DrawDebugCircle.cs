@@ -1,24 +1,20 @@
-using System.Collections;
 using NodeCanvas.Framework;
-using NodeCanvas.Tasks.Actions;
 using ParadoxNotion.Design;
 using UnityEngine;
-using UnityEngine.Events;
 
 
 namespace CustomBT.Actions {
 
 	[Category("_CustomBT/Actions")]
-	[Description("Draw a line between two positions. Requires a lineType, two positions and a duratio. Always return Success.")]
-	public class DrawDebugLine : ActionTask
-	{
+	[Description("Draw a circle using a line renderer. Always return Success")]
+	public class DrawDebugCircle : ActionTask {
 		[RequiredField]
 		[BlackboardOnly]
-		public BBParameter<Vector3> startPosition;
+		public BBParameter<Vector3> centerPosition;
 		
 		[RequiredField]
 		[BlackboardOnly]
-		public BBParameter<Vector3> endPosition;
+		[Min(0f)] public BBParameter<float> radius;
 
 		public BBParameter<float> lineLifespan = 0.5f;
 
@@ -40,7 +36,7 @@ namespace CustomBT.Actions {
 		protected override void OnExecute()
 		{
 			var spawnedLine = Object.Instantiate(lineDebugPrefab, agent.transform);
-			spawnedLine.GetComponent<LineRenderedDebug>().StartLine(startPosition.value, endPosition.value, lineType.value, lineLifespan.value, isFading.value);
+			spawnedLine.GetComponent<LineRenderedDebug>().StartCircle(centerPosition.value, radius.value, lineType.value, lineLifespan.value, isFading.value);
 
 			EndAction(true);
 		}
