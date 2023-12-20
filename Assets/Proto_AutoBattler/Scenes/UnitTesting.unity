@@ -24272,7 +24272,7 @@ MonoBehaviour:
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"aimingSpeed":{"_value":160.0,"_name":"aimingSpeed","_id":"241d63af-e238-477a-a7d9-4126e9f78c3c","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"angleDelta":{"_value":3.0,"_name":"angleDelta","_id":"423d6794-ee81-4bb0-bcc8-c884fbb13736","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"hitInstance":{"_value":2,"_name":"hitInstance","_id":"29a215ba-66e1-4f50-8928-5671142d4a62","$type":"NodeCanvas.Framework.Variable`1[[HitInstance,
-    Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"pewCooldown":{"_value":1.0,"_name":"pewCooldown","_id":"77e304c7-afab-4849-8724-0c683760fab9","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    Proto_AutoBattler, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"attackCooldown":{"_value":0.5,"_name":"attackCooldown","_id":"77e304c7-afab-4849-8724-0c683760fab9","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   _objectReferences:
   - {fileID: 0}
@@ -24295,7 +24295,7 @@ MonoBehaviour:
     _references:
     - {fileID: 0}
     - {fileID: 11400000, guid: 82e8d83deef2bd646ab8d281e2c8d9b5, type: 2}
-  - _json: '{"_value":1.0,"_name":"pewCooldown","_id":"77e304c7-afab-4849-8724-0c683760fab9","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+  - _json: '{"_value":0.5,"_name":"attackCooldown","_id":"77e304c7-afab-4849-8724-0c683760fab9","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
     _references: []
 --- !u!114 &1651525543
